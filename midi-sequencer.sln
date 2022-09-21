@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "midi-sequencer", "midi-sequencer.csproj", "{0FAF192B-E930-431B-8E31-FF9ADCFBC593}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FAF192B-E930-431B-8E31-FF9ADCFBC593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FAF192B-E930-431B-8E31-FF9ADCFBC593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FAF192B-E930-431B-8E31-FF9ADCFBC593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FAF192B-E930-431B-8E31-FF9ADCFBC593}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4B99A94-987A-47AE-BD5C-AB51AB5693C4}
+	EndGlobalSection
+EndGlobal
