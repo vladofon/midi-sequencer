@@ -23,6 +23,8 @@ namespace midi_sequencer
         public MainWindow()
         {
             InitializeComponent();
+            DesignManager dm = new();
+            dm.DrawPianoRoll(this);
         }
     }
 }

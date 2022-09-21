@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:midi_sequencer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+    <Grid x:Name="Grid">
     </Grid>
 </Window>
