@@ -15,6 +15,7 @@ namespace midi_sequencer
     {
         public void DrawPianoRoll(Window window)
         {
+            window.Show();
             Component pianoRoll = new PianoRoll();
 
             ScrollViewer scroll = new ScrollViewer();

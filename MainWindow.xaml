@@ -7,5 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid x:Name="Grid">
+        <TabControl>
+            <TabItem Header="Interface">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="pianoRollButton" Content="Piano roll" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="pianoRollButton_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Playback">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="openFileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top" Click="openFileButton_Click"/>
+                    <Button x:Name="playButton" Content="Play" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="currentLabel" Content="Current time" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
