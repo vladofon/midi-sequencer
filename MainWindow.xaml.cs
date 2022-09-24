@@ -1,10 +1,12 @@
 ﻿using Microsoft.Win32;
 using midi_sequencer.playback;
+using NAudio.Midi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +41,9 @@ namespace midi_sequencer
 
         //________________________
 
+        Playback? playback;
+        MidiOut midiOut = new MidiOut(0);
+
         private void openFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -47,10 +52,33 @@ namespace midi_sequencer
             {
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
-                Playback.PlayFile(openFileDialog.FileName);
+                //Thread playbackThread = new Thread(() => Playback.PlayFile(openFileDialog.FileName));
+                //playbackThread.Start();
+                //Playback.PlayFile(openFileDialog.FileName);
+
+                playback = new Playback(midiOut, Playback.OpenFile(openFileDialog.FileName));
+
                 timer.Stop();
-                durationLabel.Content = timer.Elapsed;
+                durationLabel.Content = "Opening file: " + timer.Elapsed;
+
+                DEBUGListBox.Items.Add(timer.Elapsed);
+
+                for (int i = 0; i < playback.bigEventList.Count; i++)
+                {
+                    DEBUGListBox.Items.Add(playback.bigEventList[i]);
+                }
             }
+        }
+
+        private void playButton_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
+            if (playback != null) playback.Play();
+
+            timer.Stop();
+            durationLabel.Content = "Playing collection: " + timer.Elapsed;
         }
     }
 }
