@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid x:Name="Grid">
-        <TabControl>
+        <TabControl Grid.ColumnSpan="2">
             <TabItem Header="Interface">
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="pianoRollButton" Content="Piano roll" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="pianoRollButton_Click"/>

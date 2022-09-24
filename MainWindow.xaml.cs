@@ -59,26 +59,42 @@ namespace midi_sequencer
                 playback = new Playback(midiOut, Playback.OpenFile(openFileDialog.FileName));
 
                 timer.Stop();
-                durationLabel.Content = "Opening file: " + timer.Elapsed;
+                //durationLabel.Content = "Opening file: " + timer.Elapsed;
 
-                DEBUGListBox.Items.Add(timer.Elapsed);
+                DEBUGListBox.Items.Add("Opening file: " + timer.Elapsed);
+                DEBUGListBox.Items.Add("maxAbsoluteTime" + playback.maxAbsoluteTime);
+                DEBUGListBox.Items.Add("MIDI Events:");
 
                 for (int i = 0; i < playback.bigEventList.Count; i++)
                 {
                     DEBUGListBox.Items.Add(playback.bigEventList[i]);
                 }
+
+                DEBUGListBox.Items.Add("");
             }
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
+            //Stopwatch timer = new Stopwatch();
+            //timer.Start();
 
-            if (playback != null) playback.Play();
+            if (playback != null)
+            {
+                playback.ThreadPlay();
+                
+            }
 
-            timer.Stop();
-            durationLabel.Content = "Playing collection: " + timer.Elapsed;
+
+            Thread timeThread = new Thread(() =>
+            {
+                ;
+            });
+            timeThread.Start();
+
+
+            //timer.Stop();
+            //durationLabel.Content = "Playing collection: " + timer.Elapsed;
         }
     }
 }

@@ -13,18 +13,17 @@ namespace midi_sequencer.playback
 {
     internal class Playback
     {
-        public MidiOut midiOut; // Устройство вывода
+        private MidiOut midiOut; // Устройство вывода
 
-        public MidiEventCollection midiEvents; // Коллекция миди эвентов
+        private MidiEventCollection midiEvents; // Коллекция миди эвентов
         public List<MidiEvent> bigEventList; // Один большой список всех эвентов из коллекции
 
-        public int tempo; // Количество микросекунд на четвёртую ноту (500000 - стандарт, до того как темп будет задан мета событием, соответствует 120 BPM)
-        public int dtpqn; // Количество тактов на четвёртую ноту
-        public double multiplier; // Количество микросекунд на один такт (тик) (tempo / dtpqn)
+        private int tempo; // Количество микросекунд на четвёртую ноту (500000 - стандарт, до того как темп будет задан мета событием, соответствует 120 BPM)
+        private int dtpqn; // Количество тактов на четвёртую ноту
+        private double multiplier; // Количество микросекунд на один такт (тик) (tempo / dtpqn)
 
-        public long prevAbsoluteTime = 0; // AbsoluteTime предыдущего эвента
-
-
+        private long currAbsoluteTime = 0; // AbsoluteTime предыдущего эвента. Измеряется в тактах
+        public long maxAbsoluteTime = 0;
 
         public Playback(MidiOut midiOut, MidiEventCollection midiEvents) // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
         {
@@ -45,6 +44,18 @@ namespace midi_sequencer.playback
             tempo = 500000;
             dtpqn = midiEvents.DeltaTicksPerQuarterNote;
             multiplier = tempo / dtpqn;
+            maxAbsoluteTime = bigEventList.Last().AbsoluteTime;
+        }
+
+        public TimeSpan GetTime()
+        {
+            return new TimeSpan((long)(currAbsoluteTime * multiplier * 10));
+        }
+
+        public void ThreadPlay()
+        {
+            Thread playThread = new Thread(Play);
+            playThread.Start();
         }
 
         public void Play() // Воспроизвести коллекцию
@@ -79,9 +90,9 @@ namespace midi_sequencer.playback
                     binaryWriter.Close();
                 }
 
-                MicrosecondDelay((long)((bigEventList[i].AbsoluteTime - prevAbsoluteTime) * multiplier)); // Задержка потока. (Абсолютное время текущей комманды - Абсолютное время пред. комманды) * Количество микросекунд на один такт
+                MicrosecondDelay((long)((bigEventList[i].AbsoluteTime - currAbsoluteTime) * multiplier)); // Задержка потока. (Абсолютное время текущей комманды - Абсолютное время пред. комманды) * Количество микросекунд на один такт
 
-                prevAbsoluteTime = bigEventList[i].AbsoluteTime; // Запись нового AbsoluteTime из текущей комманды в prevAbsoluteTime
+                currAbsoluteTime = bigEventList[i].AbsoluteTime; // Запись нового AbsoluteTime из текущей комманды в prevAbsoluteTime
 
                 midiOut.Send(bigEventList[i].GetAsShortMessage()); // Отправка МИДИ комманды на воспроизводящее Midi устройство
             }
