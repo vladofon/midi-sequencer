@@ -14,8 +14,10 @@ namespace midi_sequencer.view.component
     internal class PianoRoll : Component
     {
         private Button currentPressedNote = new Button();
-        private Point mouseDown = new(0, 0);
+        private Point mouseDownOnBuild = new(0, 0);
+        private Point mouseDownOnMove = new(0, 0);
         private bool isNotePressed = false;
+        private bool isMouseAndNoteLocationSync = false;
 
         private Dictionary<int, List<Button>> notes = new();
         private List<Button> noteTrace = new();
@@ -61,8 +63,8 @@ namespace midi_sequencer.view.component
             int left = (int)x - (int)x % noteBtnWidth;
             int top = (int)y - (int)y % noteBtnHeight;
 
-            this.mouseDown.X = left;
-            this.mouseDown.Y = top;
+            this.mouseDownOnBuild.X = left;
+            this.mouseDownOnBuild.Y = top;
 
             currentPressedNote = new Button();
             currentPressedNote.Margin = new Thickness(left, top, 0, 0);
@@ -76,53 +78,114 @@ namespace midi_sequencer.view.component
             currentPressedNote.PreviewMouseMove += Note_MouseMove;
 
             pianoGrid.Children.Add(currentPressedNote);
-            this.notes[(int)this.mouseDown.Y / noteBtnHeight].Add(currentPressedNote);
-            //currentPressedNote.Content = "" + (int)this.mouseDown.Y / noteBtnHeight;
-            //currentPressedNote.Content = "" + currentPressedNote.Margin.Left;
+            this.notes[(int)this.mouseDownOnBuild.Y / noteBtnHeight].Add(currentPressedNote);
 
             this.isNotePressed = true;
         }
 
         private void Piano_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            BuildNoteCell(e.GetPosition(pianoGrid));
+            ManipulateNote(e.GetPosition(pianoGrid));
             this.isNotePressed = false;
+            this.isMouseAndNoteLocationSync = false;
+        }
+
+        void ManipulateNote(Point mousePosition)
+        {
+            int fixedMousePosition = (int)mousePosition.X - (int)mousePosition.X % noteBtnWidth;
+
+            int noteCellEdge = (int)(currentPressedNote.Margin.Left + currentPressedNote.Width);
+
+            if (fixedMousePosition >= noteCellEdge - noteBtnWidth * 2 && fixedMousePosition <= noteCellEdge)
+            {
+                BuildNoteCell(mousePosition);
+            }
+            else if (this.isMouseAndNoteLocationSync)
+            {
+                MoveNote(mousePosition);
+            }
+
+            if (!isMouseAndNoteLocationSync)
+            {
+                Point currentNoteLocation = new Point(fixedMousePosition, this.currentPressedNote.Margin.Top);
+                this.mouseDownOnMove = currentNoteLocation;
+                isMouseAndNoteLocationSync = true;
+            }
+        }
+
+        bool isIntersect(int left, int right)
+        {
+            int noteTrack = (int)this.currentPressedNote.Margin.Top / noteBtnHeight;
+
+            Predicate<Button> isSameButton = i => (!i.Equals(currentPressedNote));
+            Predicate<Button> hasIntersectRight = i => (right > i.Margin.Left && left < i.Margin.Left) && isSameButton.Invoke(i);
+            Predicate<Button> hasIntersectLeft = i => (left < i.Margin.Left + i.Width && left > i.Margin.Left) && isSameButton.Invoke(i);
+            Predicate<Button> hasIntersectWhole = i => (left <= i.Margin.Left && right >= i.Margin.Left + i.Width) && isSameButton.Invoke(i);
+
+            bool isIntersectRight = notes[noteTrack].Find(hasIntersectRight) != null;
+            bool isIntersectLeft = notes[noteTrack].Find(hasIntersectLeft) != null;
+            bool isIntersectWhole = notes[noteTrack].Find(hasIntersectWhole) != null;
+
+            return isIntersectRight || isIntersectLeft || isIntersectWhole;
         }
 
         void BuildNoteCell(Point mousePosition)
         {
-            if (mousePosition.X <= this.mouseDown.X) return;
+            if (mousePosition.X <= this.mouseDownOnBuild.X) return;
 
-            int left = (int)mousePosition.X - (int)mousePosition.X % noteBtnWidth;
+            int fixedMousePosition = (int)mousePosition.X - (int)mousePosition.X % noteBtnWidth;
 
-            bool isIntersect = notes[(int)this.currentPressedNote.Margin.Top / noteBtnHeight].Find(
-                i => (this.currentPressedNote.Margin.Left <= i.Margin.Left && left >= i.Margin.Left && !i.Equals(currentPressedNote))
-            ) != null;
-
-            if (isIntersect) return;
-
+            int addition;
             if (currentPressedNote.Width == noteBtnWidth)
             {
-                currentPressedNote.Width += left - (int)this.mouseDown.X;
+                addition = fixedMousePosition - (int)this.mouseDownOnBuild.X;
             }
             else
             {
-                currentPressedNote.Width += left - (int)this.mouseDown.X - currentPressedNote.Width + noteBtnWidth;
+                addition = (int)(fixedMousePosition - (int)this.mouseDownOnBuild.X - currentPressedNote.Width + noteBtnWidth);
             }
+
+            int left = (int)currentPressedNote.Margin.Left;
+            int right = left + (int)(currentPressedNote.Width + addition);
+
+            if (isIntersect(left, right)) return;
+
+            this.currentPressedNote.Width += addition;
+
+        }
+
+        void MoveNote(Point mousePosition)
+        {
+            int fixedMousePosition = (int)mousePosition.X - (int)mousePosition.X % noteBtnWidth;
+
+            Thickness currentMargin = currentPressedNote.Margin;
+            Thickness upadatedMargin = new Thickness(
+                currentMargin.Left += fixedMousePosition - this.mouseDownOnMove.X,
+                currentMargin.Top, 0, 0
+             );
+
+            int left = (int)upadatedMargin.Left;
+            int right = left + (int)(currentPressedNote.Width);
+
+            if (isIntersect(left, right)) return;
+
+            currentPressedNote.Margin = upadatedMargin;
+            this.mouseDownOnMove = new Point(fixedMousePosition, currentPressedNote.Margin.Top);
         }
 
         void Note_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            BuildNoteCell(e.GetPosition(pianoGrid));
+            ManipulateNote(e.GetPosition(pianoGrid));
             this.isNotePressed = false;
+            this.isMouseAndNoteLocationSync = false;
             this.noteTrace.Clear();
         }
 
         void Note_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.currentPressedNote = (Button)sender;
-            this.mouseDown.X = (int)currentPressedNote.Margin.Left;
-            this.mouseDown.Y = (int)currentPressedNote.Margin.Top;
+            this.mouseDownOnBuild.X = (int)currentPressedNote.Margin.Left;
+            this.mouseDownOnBuild.Y = (int)currentPressedNote.Margin.Top;
             this.isNotePressed = true;
         }
 
@@ -131,7 +194,7 @@ namespace midi_sequencer.view.component
 
             if (this.isNotePressed)
             {
-                BuildNoteCell(e.GetPosition(pianoGrid));
+                ManipulateNote(e.GetPosition(pianoGrid));
             }
         }
 
@@ -140,7 +203,7 @@ namespace midi_sequencer.view.component
 
             if (this.isNotePressed)
             {
-                BuildNoteCell(e.GetPosition(pianoGrid));
+                ManipulateNote(e.GetPosition(pianoGrid));
             }
         }
     }
