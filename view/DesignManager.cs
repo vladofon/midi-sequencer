@@ -20,7 +20,7 @@ namespace midi_sequencer
 
             ScrollViewer scroll = new ScrollViewer();
             scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
-            scroll.Content = pianoRoll.Draw();
+            scroll.Content = pianoRoll.Build();
 
             window.Content = scroll;
         }

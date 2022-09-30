@@ -9,6 +9,6 @@ namespace midi_sequencer.view.component
 {
     internal interface Component
     {
-        public Grid Draw();
+        public Grid Build();
     }
 }
