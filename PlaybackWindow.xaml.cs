@@ -29,60 +29,81 @@ namespace midi_sequencer
             InitializeComponent();
         }
 
+        // Тестовая палата для методов воспроизведения
+
         Playback? playback;
         MidiOut midiOut = new MidiOut(0);
 
-        private void openFileButton_Click(object sender, RoutedEventArgs e)
+        private void fileButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
+            if (playback == null)
             {
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-                //Thread playbackThread = new Thread(() => Playback.PlayFile(openFileDialog.FileName));
-                //playbackThread.Start();
-                //Playback.PlayFile(openFileDialog.FileName);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                playback = new Playback(midiOut, Playback.OpenFile(openFileDialog.FileName));
-
-                timer.Stop();
-                //durationLabel.Content = "Opening file: " + timer.Elapsed;
-
-                DEBUGListBox.Items.Add("Opening file: " + timer.Elapsed);
-                DEBUGListBox.Items.Add("maxAbsoluteTime" + playback.maxAbsoluteTime);
-                DEBUGListBox.Items.Add("MIDI Events:");
-
-                for (int i = 0; i < playback.bigEventList.Count; i++)
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    DEBUGListBox.Items.Add(playback.bigEventList[i]);
-                }
+                    playback = new Playback(midiOut, Playback.OpenFile(openFileDialog.FileName));
 
-                DEBUGListBox.Items.Add("");
+                    currentStateLabel.Content = "Current state: " + playback.playbackState;
+                    fileButton.Content = "Close file";
+
+                    DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
+                    DEBUGListBox.Items.Add("MIDI Events:");
+                    for (int i = 0; i < playback.bigEventList.Count; i++)
+                    {
+                        DEBUGListBox.Items.Add(playback.bigEventList[i]);
+                    }
+                    DEBUGListBox.Items.Add("");
+                }
+            }
+            else
+            {
+                playback.Close();
+
+                currentStateLabel.Content = "Current state: " + playback.playbackState;
+                fileButton.Content = "Open file";
+
+                playback = null;
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (playback != null)
+            {
+                playback.Close();
+                playback = null;
             }
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            //Stopwatch timer = new Stopwatch();
-            //timer.Start();
-
             if (playback != null)
             {
-                playback.ThreadPlay();
+                playback.Play();
 
+                currentStateLabel.Content = "Current state: " + playback.playbackState;
             }
+        }
 
-
-            Thread timeThread = new Thread(() =>
+        private void pauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (playback != null)
             {
-                ;
-            });
-            timeThread.Start();
+                playback.Pause();
 
+                currentStateLabel.Content = "Current state: " + playback.playbackState;
+            }
+        }
 
-            //timer.Stop();
-            //durationLabel.Content = "Playing collection: " + timer.Elapsed;
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (playback != null)
+            {
+                playback.Stop();
+
+                currentStateLabel.Content = "Current state: " + playback.playbackState;
+            }
         }
     }
 }

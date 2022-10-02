@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:midi_sequencer"
         mc:Ignorable="d"
-        Title="Playback" Height="450" Width="800">
+        Title="Playback" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
 
-        <Button x:Name="playButton" Content="Play" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="playButton_Click"/>
-        <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="currentLabel" Content="Current time" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="playButton" Content="Play" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Click="playButton_Click" Width="70"/>
+        <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="85,50,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="70"/>
+        <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="160,50,0,0" VerticalAlignment="Top" Click="stopButton_Click" Width="70"/>
+
+        <Label x:Name="currentStateLabel" Content="Current state" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="323"/>
+        <Label x:Name="currentTimeLabel" Content="Current time" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" Width="323"/>
+        <Label x:Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="10,137,0,0" VerticalAlignment="Top" Width="323"/>
+
         <ListBox x:Name="DEBUGListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2" Margin="338,13,114,65"/>
-        <Button x:Name="openFileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,349,0,0" VerticalAlignment="Top" Click="openFileButton_Click"/>
+
+        <Button x:Name="fileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="fileButton_Click" Width="70"/>
 
     </Grid>
 </Window>
