@@ -10,15 +10,10 @@
 
   <ItemGroup>
     <None Remove="icon.png" />
-    <None Remove="playback\icon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="playback\icon.png" />
   </ItemGroup>
 
 </Project>

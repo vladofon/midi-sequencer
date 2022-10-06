@@ -1,4 +1,4 @@
-﻿using midi_sequencer.playback;
+﻿using midi_sequencer.service;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -24,24 +24,26 @@ namespace midi_sequencer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private DesignManager designManager;
+
         public MainWindow()
         {
             InitializeComponent();
+            this.designManager = new();
         }
 
         private void pianoRollButton_Click(object sender, RoutedEventArgs e)
         {
-            PianoRollWindow pianoRollWindow = new PianoRollWindow();
-            //pianoRollWindow.Show();
+            PianoRollWindow pianoRollWindow = new();
 
-            DesignManager dm = new();
-            dm.DrawPianoRoll(pianoRollWindow);
+            designManager.PianoRollWindow(pianoRollWindow);
         }
 
         private void playbackButton_Click(object sender, RoutedEventArgs e)
         {
-            PlaybackWindow playbackWindow = new PlaybackWindow();
-            playbackWindow.Show();
+            PlaybackWindow playbackWindow = new();
+
+            designManager.PlaybackWindow(playbackWindow);
         }
 
         //________________________

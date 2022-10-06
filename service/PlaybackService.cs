@@ -12,14 +12,14 @@ using Microsoft.Win32;
 using NAudio.Midi;
 using NAudio.Wave;
 
-namespace midi_sequencer.playback
+namespace midi_sequencer.service
 {
     enum PlaybackStates // Состояния проигрывания
     {
         Playing, Stopped, Paused, Closed, Undefined
     }
 
-    internal class Playback
+    internal class PlaybackService
     {
         private MidiOut midiOut; // Устройство вывода
 
@@ -43,7 +43,7 @@ namespace midi_sequencer.playback
 
         private Thread playThread; // Поток воспроизведения
 
-        public Playback(MidiOut midiOut, MidiEventCollection midiEvents) // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
+        public PlaybackService(MidiOut midiOut, MidiEventCollection midiEvents) // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
         {
             this.midiOut = midiOut; // Запись аргументов в экземпляр класса
             this.midiEvents = midiEvents;

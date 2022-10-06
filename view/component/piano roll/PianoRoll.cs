@@ -22,7 +22,7 @@ namespace midi_sequencer.view.component
 
         private Grid pianoRoll;
 
-        private Component pianoKeysBuilder;
+        private PianoKeys pianoKeysBuilder;
         private NotesGrid notesGridBuilder;
 
         public PianoRoll(int channel)

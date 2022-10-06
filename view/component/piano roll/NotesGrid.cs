@@ -61,7 +61,7 @@ namespace midi_sequencer.view.component.piano_roll
             {
                 foreach (Button note in this.notes[i])
                 {
-                    noteButtons.Add(new NoteButton(1, note, this.noteButtonWidth, this.noteButtonHeight));
+                    noteButtons.Add(new NoteButton(1, i, note, this.noteButtonWidth, this.noteButtonHeight));
                 }
             }
 

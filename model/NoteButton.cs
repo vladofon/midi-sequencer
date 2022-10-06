@@ -11,13 +11,15 @@ namespace midi_sequencer.model
     {
         private int noteButtonWidth;
         private int noteButtonHeight;
+        private int noteNumber;
         private int channel;
 
         private Button noteButton;
 
-        public NoteButton(int channel, Button noteButton, int noteButtonWidth, int noteButtonHeight)
+        public NoteButton(int channel, int noteNumber, Button noteButton, int noteButtonWidth, int noteButtonHeight)
         {
             this.channel = channel;
+            this.noteNumber = noteNumber;
             this.noteButton = noteButton;
             this.noteButtonWidth = noteButtonWidth;
             this.noteButtonHeight = noteButtonHeight;
@@ -40,7 +42,7 @@ namespace midi_sequencer.model
 
         public int GetNoteNumber()
         {
-            return (int)this.noteButton.Height / noteButtonHeight;
+            return this.noteNumber;
         }
 
         public int GetChannel()

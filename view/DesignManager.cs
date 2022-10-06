@@ -17,35 +17,44 @@ namespace midi_sequencer
 {
     internal class DesignManager
     {
-        PianoRoll pianoRoll = new PianoRoll(1);
 
-        public void DrawPianoRoll(Window window)
+
+        public void PianoRollWindow(Window window)
         {
             window.Show();
 
             Grid view = new();
+
             ColumnDefinition firstCol = new();
-            RowDefinition firstRow = new RowDefinition();
+            RowDefinition firstRow = new();
+            RowDefinition secondRow = new();
+
             firstRow.Height = new GridLength(30);
-            RowDefinition secondRow = new RowDefinition();
 
             view.ColumnDefinitions.Add(firstCol);
             view.RowDefinitions.Add(firstRow);
             view.RowDefinitions.Add(secondRow);
 
-            Grid tbt = new PianoRollTray(pianoRoll).Build();
-            tbt.SetValue(Grid.RowProperty, 0);
-            tbt.SetValue(Grid.ColumnProperty, 0);
+            PianoRoll pianoRoll = new PianoRoll(1);
+            Grid pianoRollGrid = pianoRoll.Build();
+            pianoRollGrid.VerticalAlignment = VerticalAlignment.Bottom;
+            pianoRollGrid.SetValue(Grid.RowProperty, 1);
+            pianoRollGrid.SetValue(Grid.ColumnProperty, 0);
 
-            Grid pr = pianoRoll.Build();
-            pr.VerticalAlignment = VerticalAlignment.Bottom;
-            pr.SetValue(Grid.RowProperty, 1);
-            pr.SetValue(Grid.ColumnProperty, 0);
+            Grid pianoRollTray = new PianoRollTray(pianoRoll).Build();
+            pianoRollTray.SetValue(Grid.RowProperty, 0);
+            pianoRollTray.SetValue(Grid.ColumnProperty, 0);
 
-            view.Children.Add(tbt);
-            view.Children.Add(pr);
+            view.Children.Add(pianoRollTray);
+            view.Children.Add(pianoRollGrid);
 
             window.Content = view;
+        }
+
+        public void PlaybackWindow(Window window)
+        {
+            window = new Playback();
+            window.Show();
         }
     }
 }
