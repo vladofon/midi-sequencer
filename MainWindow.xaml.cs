@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using midi_sequencer.playback;
+﻿using midi_sequencer.playback;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -39,62 +38,14 @@ namespace midi_sequencer
             dm.DrawPianoRoll(pianoRollWindow);
         }
 
+        private void playbackButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlaybackWindow playbackWindow = new PlaybackWindow();
+            playbackWindow.Show();
+        }
+
         //________________________
 
-        Playback? playback;
-        MidiOut midiOut = new MidiOut(0);
 
-        private void openFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-                //Thread playbackThread = new Thread(() => Playback.PlayFile(openFileDialog.FileName));
-                //playbackThread.Start();
-                //Playback.PlayFile(openFileDialog.FileName);
-
-                playback = new Playback(midiOut, Playback.OpenFile(openFileDialog.FileName));
-
-                timer.Stop();
-                //durationLabel.Content = "Opening file: " + timer.Elapsed;
-
-                DEBUGListBox.Items.Add("Opening file: " + timer.Elapsed);
-                DEBUGListBox.Items.Add("maxAbsoluteTime" + playback.maxAbsoluteTime);
-                DEBUGListBox.Items.Add("MIDI Events:");
-
-                for (int i = 0; i < playback.bigEventList.Count; i++)
-                {
-                    DEBUGListBox.Items.Add(playback.bigEventList[i]);
-                }
-
-                DEBUGListBox.Items.Add("");
-            }
-        }
-
-        private void playButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Stopwatch timer = new Stopwatch();
-            //timer.Start();
-
-            if (playback != null)
-            {
-                playback.ThreadPlay();
-                
-            }
-
-
-            Thread timeThread = new Thread(() =>
-            {
-                ;
-            });
-            timeThread.Start();
-
-
-            //timer.Stop();
-            //durationLabel.Content = "Playing collection: " + timer.Elapsed;
-        }
     }
 }
