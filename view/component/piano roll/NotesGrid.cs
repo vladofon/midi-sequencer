@@ -1,4 +1,5 @@
-﻿using System;
+﻿using midi_sequencer.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,9 @@ namespace midi_sequencer.view.component.piano_roll
         private Grid notesGrid;
         private Brush bgColor;
 
+        private ScrollViewer horizontalScroll;
+        private int scrollMultiplier = 0;
+
         public NotesGrid(int countOfNotes, int noteButtonWidth, int noteButtonHeight)
         {
             this.currentPressedNote = new Button();
@@ -43,21 +47,70 @@ namespace midi_sequencer.view.component.piano_roll
             this.noteButtonHeight = noteButtonHeight;
             this.countOfNotes = countOfNotes;
             this.notesGrid = new Grid();
+            this.horizontalScroll = new();
             this.bgColor = Brushes.Gray;
 
             InitPianoGrid();
         }
 
+        public List<NoteButton> GetNotes()
+        {
+            List<NoteButton> noteButtons = new();
+
+            for (int i = 1; i <= this.notes.Count; i++)
+            {
+                foreach (Button note in this.notes[i])
+                {
+                    noteButtons.Add(new NoteButton(1, note, this.noteButtonWidth, this.noteButtonHeight));
+                }
+            }
+
+            return noteButtons;
+        }
+
         public Grid Build()
         {
-            this.notesGrid.Background = bgColor;
+            this.notesGrid.Background = BuildBackgroundPattern();
             this.notesGrid.MouseDown += Piano_MouseDown;
             this.notesGrid.MouseUp += Piano_MouseUp;
             this.notesGrid.MouseMove += Piano_MouseMove;
+            this.notesGrid.PreviewMouseWheel += Piano_MouseWheel;
             this.notesGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.notesGrid.VerticalAlignment = VerticalAlignment.Stretch;
 
-            return notesGrid;
+
+            this.horizontalScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            this.horizontalScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            this.horizontalScroll.Content = notesGrid;
+
+            Grid scrollWrapper = new();
+            scrollWrapper.Children.Add(horizontalScroll);
+
+            return scrollWrapper;
+        }
+
+        public DrawingBrush BuildBackgroundPattern()
+        {
+            DrawingBrush brush = new();
+
+            RectangleGeometry rectanglePattern = new();
+            rectanglePattern.Rect = new Rect(0, 0, noteButtonWidth, noteButtonHeight);
+
+            Pen pen = new();
+            pen.Brush = Brushes.Black;
+            pen.Thickness = 1;
+
+            GeometryDrawing drawing = new();
+            drawing.Geometry = rectanglePattern;
+            drawing.Pen = pen;
+            drawing.Brush = Brushes.Gray;
+
+            brush.TileMode = TileMode.Tile;
+            brush.ViewportUnits = BrushMappingMode.Absolute;
+            brush.Drawing = drawing;
+            brush.Viewport = new Rect(0, 0, noteButtonWidth, noteButtonHeight);
+
+            return brush;
         }
 
         public Button BuildNoteButton(int left, int top)
@@ -82,6 +135,19 @@ namespace midi_sequencer.view.component.piano_roll
             {
                 this.notes.Add(noteRow, new List<Button>());
             }
+        }
+
+        private void Piano_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            Scroll(e.Delta > 0);
+        }
+
+        private void Scroll(bool direction)
+        {
+            if (direction)
+                this.horizontalScroll.LineLeft();
+            else
+                this.horizontalScroll.LineRight();
         }
 
         private void Piano_MouseDown(object sender, MouseButtonEventArgs e)
@@ -133,6 +199,34 @@ namespace midi_sequencer.view.component.piano_roll
                 this.mouseDownOnMove = currentNoteLocation;
                 isMouseAndNoteLocationSync = true;
             }
+
+            //int breakpoint = noteButtonWidth * 20;
+            //if (fixedMousePosition >= this.notesGrid.ActualWidth - breakpoint)
+            //{
+            //    this.scrollMultiplier++;
+
+            //    if (this.scrollMultiplier == 10)
+            //    {
+            //        Scroll(false);
+            //        this.scrollMultiplier = 0;
+            //    }
+
+            //    //MessageBox.Show("scrolled");
+            //}
+            //else if (fixedMousePosition <= breakpoint)
+            //{
+            //    this.scrollMultiplier++;
+
+            //    if (this.scrollMultiplier == 10)
+            //    {
+            //        Scroll(true);
+            //        this.scrollMultiplier = 0;
+            //    }
+
+            //    //MessageBox.Show("back");
+            //}
+
+            //MessageBox.Show("mouse: " + fixedMousePosition + " | width: " + (this.notesGrid.ActualWidth));
         }
 
         bool IsIntersect(int left, int right)
