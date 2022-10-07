@@ -1,4 +1,7 @@
-﻿using midi_sequencer.service;
+﻿using midi_sequencer.model;
+using midi_sequencer.service;
+using midi_sequencer.view;
+using midi_sequencer.windows;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -17,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace midi_sequencer
+namespace midi_sequencer.windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

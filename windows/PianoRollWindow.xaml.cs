@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace midi_sequencer
+namespace midi_sequencer.windows
 {
     /// <summary>
     /// Логика взаимодействия для PianoRollWindow.xaml

@@ -2,6 +2,7 @@
 using midi_sequencer.service;
 using midi_sequencer.view.component;
 using midi_sequencer.view.component.piano_roll;
+using midi_sequencer.view.component.playback;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace midi_sequencer
+namespace midi_sequencer.view
 {
     internal class DesignManager
     {

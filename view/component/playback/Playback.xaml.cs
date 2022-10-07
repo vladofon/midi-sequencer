@@ -17,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace midi_sequencer
+namespace midi_sequencer.view.component.playback
 {
     /// <summary>
     /// Логика взаимодействия для PlaybackWindow.xaml

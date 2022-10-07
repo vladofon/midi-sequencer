@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace midi_sequencer.view.component
+namespace midi_sequencer.view.component.piano_roll
 {
     internal class PianoRoll : Component
     {
