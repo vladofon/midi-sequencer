@@ -49,6 +49,13 @@ namespace midi_sequencer.windows
             designManager.PlaybackWindow(playbackWindow);
         }
 
+        private void generalButton_Click(object sender, RoutedEventArgs e)
+        {
+            GeneralWindow generalWindow = new();
+
+            designManager.GeneralWindow(generalWindow);
+        }
+
         //________________________
 
 

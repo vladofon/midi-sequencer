@@ -22,9 +22,9 @@ namespace midi_sequencer.view.component.playback
     /// <summary>
     /// Логика взаимодействия для PlaybackWindow.xaml
     /// </summary>
-    public partial class Playback : Window
+    public partial class PlaybackDEBUG : Window
     {
-        public Playback(/*Playback playback, MidiOut midiOut*/)
+        public PlaybackDEBUG(/*Playback playback, MidiOut midiOut*/)
         {
             InitializeComponent();
         }

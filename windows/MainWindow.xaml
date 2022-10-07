@@ -9,6 +9,7 @@
     <Grid x:Name="Grid">
         <Button x:Name="pianoRollButton" Content="Piano roll" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="pianoRollButton_Click"/>
         <Button x:Name="playbackButton" Content="Playback" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="54" Click="playbackButton_Click"/>
+        <Button x:Name="generalButton" Content="General" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="54" Click="generalButton_Click"/>
         <Image Margin="158,42,42,42" Source="/playback/icon.png"/>
 
     </Grid>
