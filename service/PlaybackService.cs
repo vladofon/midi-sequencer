@@ -21,9 +21,9 @@ namespace midi_sequencer.service
 
     internal class PlaybackService
     {
-        private MidiOut midiOut; // Устройство вывода
+        //private MidiOut midiOut = new(0); // Устройство вывода
 
-        private MidiEventCollection midiEvents; // Коллекция миди эвентов
+        //private MidiEventCollection midiEvents; // Коллекция миди эвентов
         public List<MidiEvent> bigEventList; // Один большой список всех эвентов из коллекции
 
         public PlaybackStates playbackState; // Состояние воспроизведения
@@ -43,15 +43,39 @@ namespace midi_sequencer.service
 
         private Thread playThread; // Поток воспроизведения
 
-        public PlaybackService(MidiOut midiOut, MidiEventCollection midiEvents) // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
+        //public PlaybackService(/*MidiOut midiOut, MidiEventCollection midiEvents*/) // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
+        //{
+        //    //this.midiOut = midiOut; // Запись аргументов в экземпляр класса
+        //    //this.midiEvents = midiEvents;
+        //    //MessageBox.Show("created PlaybackService" + GlobalVars.midiEventCollection[0]);
+
+        //    bigEventList = new List<MidiEvent>(); // Создание списка эвентов bigEventList
+        //    for (int i = 0; i < GlobalVars.midiEventCollection.Tracks; i++) // В цикле объединение всех треков (списков эвентов в MidiEventCollection events) в один список List<MidiEvent> bigEventList
+        //    {
+        //        bigEventList.AddRange(GlobalVars.midiEventCollection[i]);
+        //    }
+
+        //    bigEventList.Sort(delegate (MidiEvent a, MidiEvent b) // Сортировка списка eventList по полю AbsoluteTime
+        //    {
+        //        return a.AbsoluteTime.CompareTo(b.AbsoluteTime);
+        //    });
+
+        //    VarsReset(); // Сброс всех переменных до стандартных значений
+
+        //    playbackState = PlaybackStates.Stopped; // Начальное состояние воспроизведения
+
+        //    playThread = new Thread(PlaybackThread); // Запуск нового потока с методом PlaybackThread
+        //    playThread.Start();
+        //}
+
+        public void StartNewThread()
         {
-            this.midiOut = midiOut; // Запись аргументов в экземпляр класса
-            this.midiEvents = midiEvents;
+            playbackState = PlaybackStates.Closed;
 
             bigEventList = new List<MidiEvent>(); // Создание списка эвентов bigEventList
-            for (int i = 0; i < midiEvents.Tracks; i++) // В цикле объединение всех треков (списков эвентов в MidiEventCollection events) в один список List<MidiEvent> bigEventList
+            for (int i = 0; i < GlobalVars.midiEventCollection.Tracks; i++) // В цикле объединение всех треков (списков эвентов в MidiEventCollection events) в один список List<MidiEvent> bigEventList
             {
-                bigEventList.AddRange(midiEvents[i]);
+                bigEventList.AddRange(GlobalVars.midiEventCollection[i]);
             }
 
             bigEventList.Sort(delegate (MidiEvent a, MidiEvent b) // Сортировка списка eventList по полю AbsoluteTime
@@ -75,7 +99,7 @@ namespace midi_sequencer.service
             refAT = 0;
 
             tempo = 500000;
-            dtpqn = midiEvents.DeltaTicksPerQuarterNote;
+            dtpqn = GlobalVars.midiEventCollection.DeltaTicksPerQuarterNote;
             multiplier = tempo / dtpqn;
 
             currAbsoluteTime = 0;
@@ -130,7 +154,7 @@ namespace midi_sequencer.service
             return playingNotes; // Возвращаем список
         }
 
-        public void PlaybackThread() // Поток воспроизведения
+        private void PlaybackThread() // Поток воспроизведения
         {
             while (playbackState != PlaybackStates.Closed) // Основной цикл, исполняется до закрытия потока
             {
@@ -198,7 +222,7 @@ namespace midi_sequencer.service
 
                         else // Обработка остальных эвентов
                         {
-                            midiOut.Send(bigEventList[currEvent].GetAsShortMessage()); // Отправка МИДИ комманды на воспроизводящее Midi устройство
+                            GlobalVars.midiOut.Send(bigEventList[currEvent].GetAsShortMessage()); // Отправка МИДИ комманды на воспроизводящее Midi устройство
                         }
 
                         currEvent++; // Действительно блять, почему нихуя не играло?
@@ -221,7 +245,7 @@ namespace midi_sequencer.service
 
             for (int i = 0; i < pausedNotes.Count(); i++) // Заглушаем в цикле все играющие ноты, не изменяя их список
             {
-                midiOut.Send(new NoteOnEvent(0, pausedNotes[i].Channel, pausedNotes[i].NoteNumber, 0, 0).GetAsShortMessage());
+                GlobalVars.midiOut.Send(new NoteOnEvent(0, pausedNotes[i].Channel, pausedNotes[i].NoteNumber, 0, 0).GetAsShortMessage());
             }
         }
 
@@ -231,7 +255,7 @@ namespace midi_sequencer.service
 
             for (int i = 0; i < pausedNotes.Count(); i++) // В цикле воспроизводим все ноты из списка pausedNotes
             {
-                midiOut.Send(pausedNotes[i].GetAsShortMessage());
+                GlobalVars.midiOut.Send(pausedNotes[i].GetAsShortMessage());
             }
         }
 
@@ -239,6 +263,15 @@ namespace midi_sequencer.service
         {
             MidiFile midiFile = new MidiFile(filePath); // Открытие файла
             return midiFile.Events; // Возвращение коллекции файла
+        }
+
+        public void UpdateMidiCollection(MidiEventCollection midiEvents)
+        {
+            //playbackState = PlaybackStates.Stopped;
+
+            GlobalVars.midiEventCollection = midiEvents;
+            GlobalVars.midiOut.Reset();
+            StartNewThread();
         }
 
         static private void MicrosecondDelay(long durationMicroseconds) // Задержка в микросекундах

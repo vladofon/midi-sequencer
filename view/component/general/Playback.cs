@@ -18,7 +18,7 @@ namespace midi_sequencer.view.component.general
         private const double buttonHeight = 50;
         private const double distanceBetweenButtons = 5;
 
-        private PlaybackService playbackService = new(GlobalVars.midiOut, PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid")); // Нужно перенести GlobalVars в класс PlaybackService (Если оставлять класс GlobalVars)
+        private PlaybackService playbackService = new(); // Нужно перенести GlobalVars в класс PlaybackService (Если оставлять класс GlobalVars)
         // PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid")
         // GlobalVars.midiEventCollection
 

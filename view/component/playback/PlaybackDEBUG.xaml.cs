@@ -24,88 +24,89 @@ namespace midi_sequencer.view.component.playback
     /// </summary>
     public partial class PlaybackDEBUG : Window
     {
-        public PlaybackDEBUG(/*Playback playback, MidiOut midiOut*/)
+        private PlaybackService playback = new PlaybackService();
+
+        public PlaybackDEBUG()
         {
             InitializeComponent();
+
+            //GlobalVars.dbgInt = 20;
+            GlobalVars.midiOut = new(0);
+            GlobalVars.midiEventCollection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
+
+            playback.StartNewThread();
         }
 
         // Тестовая палата для методов воспроизведения
 
-        private PlaybackService? playback;
-        private MidiOut midiOut = new MidiOut(0);
-
         private void fileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback == null)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
+                playback.Stop();
+                playback.UpdateMidiCollection(PlaybackService.OpenFile(openFileDialog.FileName));
 
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    playback = new PlaybackService(midiOut, PlaybackService.OpenFile(openFileDialog.FileName));
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
 
-                    currentStateLabel.Content = "Current state: " + playback.playbackState;
-                    fileButton.Content = "Close file";
-
-                    DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
-                    DEBUGListBox.Items.Add("MIDI Events:");
-                    for (int i = 0; i < playback.bigEventList.Count; i++)
-                    {
-                        DEBUGListBox.Items.Add(playback.bigEventList[i]);
-                    }
-                    DEBUGListBox.Items.Add("");
-                }
+                //DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
+                //DEBUGListBox.Items.Add("MIDI Events:");
+                //for (int i = 0; i < playback.bigEventList.Count; i++)
+                //{
+                //    DEBUGListBox.Items.Add(playback.bigEventList[i]);
+                //}
+                //DEBUGListBox.Items.Add("");
             }
-            else
-            {
-                playback.Close();
+            //else
+            //{
+            //    playback.Close();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
-                fileButton.Content = "Open file";
+            //    currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //    fileButton.Content = "Open file";
 
-                playback = null;
-            }
+            //    playback = null;
+            //}
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Close();
-                playback = null;
-            }
+            playback.Close();
+            //playback = null;
 
             //this.playbackService.Close();
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Play();
+            playback.Play();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
-            }
+            currentStateLabel.Content = "Current state: " + playback.playbackState;
         }
 
         private void pauseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Pause();
+            playback.Pause();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
-            }
+            currentStateLabel.Content = "Current state: " + playback.playbackState;
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Stop();
+            playback.Stop();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
-            }
+            currentStateLabel.Content = "Current state: " + playback.playbackState;
+        }
+
+        private void dbg0_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("dbgInt = " + GlobalVars.dbgInt);
+        }
+
+        private void dbg1_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("");
+
         }
     }
 }

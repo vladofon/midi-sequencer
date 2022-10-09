@@ -20,5 +20,8 @@
 
         <Button x:Name="fileButton" Content="Open File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="fileButton_Click" Width="70"/>
 
+        <Button x:Name="dbgBtn0" Content="dbg0" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top" Click="dbg0_Click" Width="70"/>
+        <Button x:Name="dbgBtn1" Content="dbg1" HorizontalAlignment="Left" Margin="85,253,0,0" VerticalAlignment="Top" Click="dbg1_Click" Width="70"/>
+
     </Grid>
 </Window>
