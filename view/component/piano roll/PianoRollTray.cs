@@ -15,13 +15,13 @@ namespace midi_sequencer.view.component.piano_roll
     {
         private PianoRoll pianoRoll;
 
-        private MidiService midiService;
+        //private MidiService midiService;
 
         public PianoRollTray(PianoRoll pianoRoll)
         {
             this.pianoRoll = pianoRoll;
 
-            this.midiService = new();
+            //this.midiService = new();
         }
 
         public Grid Build()
@@ -54,8 +54,8 @@ namespace midi_sequencer.view.component.piano_roll
 
             collection.AddTrack();
             collection.AddTrack(midi);
-            midiService.AppendEndMarker(collection[0]);
-            midiService.AppendEndMarker(collection[1]);
+            MidiService.GetInstance().AppendEndMarker(collection[0]);
+            MidiService.GetInstance().AppendEndMarker(collection[1]);
 
             collection.PrepareForExport();
             MidiFile.Export("thisshitfuckinworks.mid", collection);

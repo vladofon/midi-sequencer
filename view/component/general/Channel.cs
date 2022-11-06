@@ -18,16 +18,14 @@ namespace midi_sequencer.view.component.general
         private Brush brush;
 
         public int channelNumber;
-        private MidiService midiService;
 
         private PianoRollWindow pianoRollWindow;
-        PianoRoll pianoRoll;
+        private PianoRoll pianoRoll;
 
-        public Channel(int channelNumber, MidiService midiService)
+        public Channel(int channelNumber)
         {
             brush = Brushes.Gray;
             this.channelNumber = channelNumber;
-            this.midiService = midiService;
         }
 
         public Grid Build()
@@ -69,13 +67,11 @@ namespace midi_sequencer.view.component.general
             MidiEventMapper mapper = new();
             List<MidiEvent> midi = mapper.mapAll(this.pianoRoll.GetNoteButtons());
 
-            
-
-            midiService.collection.AddTrack(midi); //!!!
+            MidiService.GetInstance().collection.AddTrack(midi); //!!!
             //midiService.AppendEndMarker(midiService.collection[17]);
 
             //midiService.collection.PrepareForExport();
-            MidiFile.Export("thisshitfuckinworks.mid", midiService.collection);
+            MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection);
         }
     }
 }

@@ -9,12 +9,23 @@ namespace midi_sequencer.service
 {
     internal class MidiService
     {
-        public MidiEventCollection collection { get; set; }
+        private static MidiService? instance;
 
-        public MidiService()
+        private MidiService()
         {
             collection = CreateNewCollection();
         }
+
+        public static MidiService GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new MidiService();
+            }
+            return instance;
+        }
+
+        public MidiEventCollection collection { get; set; }
 
         public void AppendEndMarker(IList<MidiEvent> eventList)
         {

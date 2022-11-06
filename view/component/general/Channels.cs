@@ -15,16 +15,13 @@ namespace midi_sequencer.view.component.general
         private Brush brush;
 
         private List<Channel> channels;
-        private MidiService midiService;
 
-        public Channels(MidiService midiService)
+        public Channels()
         {
-            this.midiService = midiService;
-
             channels = new List<Channel>();
             for (int i = 0; i < 16; i++)
             {
-                channels.Add(new Channel(i, this.midiService));
+                channels.Add(new Channel(i));
             }
 
             brush = Brushes.Yellow;

@@ -59,7 +59,7 @@ namespace midi_sequencer.view
 
         public void GeneralWindow(Window window)
         {
-            MidiService midiService = new MidiService(); //!!!
+            //MidiService midiService = new MidiService(); //!!!
 
             //midiService.collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
 
@@ -88,7 +88,7 @@ namespace midi_sequencer.view
             tray.SetValue(Grid.RowProperty, 0);
             tray.SetValue(Grid.ColumnProperty, 0);
 
-            Grid playback = new Playback(midiService).Build();
+            Grid playback = new Playback(MidiService.GetInstance()).Build();
             playback.SetValue(Grid.RowProperty, 1);
             playback.SetValue(Grid.ColumnProperty, 0);
 
@@ -96,7 +96,7 @@ namespace midi_sequencer.view
             playerScrollBar.SetValue(Grid.RowProperty, 2);
             playerScrollBar.SetValue(Grid.ColumnProperty, 0);
 
-            Grid channels = new Channels(midiService).Build();
+            Grid channels = new Channels().Build();
             channels.SetValue(Grid.RowProperty, 3);
             channels.SetValue(Grid.ColumnProperty, 0);
 
