@@ -14,11 +14,13 @@ namespace midi_sequencer.view.component.piano_roll
     internal class PianoRollTray : Component
     {
         private PianoRoll pianoRoll;
+
         private MidiService midiService;
 
         public PianoRollTray(PianoRoll pianoRoll)
         {
             this.pianoRoll = pianoRoll;
+
             this.midiService = new();
         }
 

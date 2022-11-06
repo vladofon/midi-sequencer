@@ -19,12 +19,8 @@ namespace midi_sequencer.view
 {
     internal class DesignManager
     {
-
-
         public void PianoRollWindow(Window window)
         {
-            window.Show();
-
             Grid view = new();
 
             ColumnDefinition firstCol = new();
@@ -51,6 +47,8 @@ namespace midi_sequencer.view
             view.Children.Add(pianoRollGrid);
 
             window.Content = view;
+
+            window.Show();
         }
 
         public void PlaybackWindow(Window window)
@@ -61,6 +59,10 @@ namespace midi_sequencer.view
 
         public void GeneralWindow(Window window)
         {
+            MidiService midiService = new MidiService(); //!!!
+
+            //midiService.collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
+
             Grid view = new();
 
             ColumnDefinition firstCol = new();
@@ -86,7 +88,7 @@ namespace midi_sequencer.view
             tray.SetValue(Grid.RowProperty, 0);
             tray.SetValue(Grid.ColumnProperty, 0);
 
-            Grid playback = new Playback().Build();
+            Grid playback = new Playback(midiService).Build();
             playback.SetValue(Grid.RowProperty, 1);
             playback.SetValue(Grid.ColumnProperty, 0);
 
@@ -94,7 +96,7 @@ namespace midi_sequencer.view
             playerScrollBar.SetValue(Grid.RowProperty, 2);
             playerScrollBar.SetValue(Grid.ColumnProperty, 0);
 
-            Grid channels = new Channels().Build();
+            Grid channels = new Channels(midiService).Build();
             channels.SetValue(Grid.RowProperty, 3);
             channels.SetValue(Grid.ColumnProperty, 0);
 
