@@ -11,9 +11,16 @@ namespace midi_sequencer.service
     {
         private static MidiService? instance;
 
+        public MidiEventCollection collection { get; set; }
+        public MidiOut midiOut { get; set; }
+
+        private const int amountOfTracks = 16;
+
         private MidiService()
         {
             collection = CreateNewCollection();
+            //collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
+            midiOut = new(0);
         }
 
         public static MidiService GetInstance()
@@ -24,9 +31,6 @@ namespace midi_sequencer.service
             }
             return instance;
         }
-
-        public MidiEventCollection collection { get; set; }
-        private const int amountOfTracks = 16;
 
         public MidiEventCollection CreateNewCollection()
         {

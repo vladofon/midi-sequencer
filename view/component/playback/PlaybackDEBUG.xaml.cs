@@ -42,25 +42,25 @@ namespace midi_sequencer.view.component.playback
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    playback = new PlaybackService(midiOut, PlaybackService.OpenFile(openFileDialog.FileName));
+                    playback = new PlaybackService();
 
-                    currentStateLabel.Content = "Current state: " + playback.playbackState;
+                    //currentStateLabel.Content = "Current state: " + playback.playbackState;
                     fileButton.Content = "Close file";
 
-                    DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
-                    DEBUGListBox.Items.Add("MIDI Events:");
-                    for (int i = 0; i < playback.bigEventList.Count; i++)
-                    {
-                        DEBUGListBox.Items.Add(playback.bigEventList[i]);
-                    }
-                    DEBUGListBox.Items.Add("");
+                    //DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
+                    //DEBUGListBox.Items.Add("MIDI Events:");
+                    //for (int i = 0; i < playback.bigEventList.Count; i++)
+                    //{
+                    //    DEBUGListBox.Items.Add(playback.bigEventList[i]);
+                    //}
+                    //DEBUGListBox.Items.Add("");
                 }
             }
             else
             {
                 playback.Close();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
                 fileButton.Content = "Open file";
 
                 playback = null;
@@ -84,7 +84,7 @@ namespace midi_sequencer.view.component.playback
             {
                 playback.Play();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
             }
         }
 
@@ -94,7 +94,7 @@ namespace midi_sequencer.view.component.playback
             {
                 playback.Pause();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
             }
         }
 
@@ -104,7 +104,7 @@ namespace midi_sequencer.view.component.playback
             {
                 playback.Stop();
 
-                currentStateLabel.Content = "Current state: " + playback.playbackState;
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
             }
         }
     }

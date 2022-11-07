@@ -59,10 +59,6 @@ namespace midi_sequencer.view
 
         public void GeneralWindow(Window window)
         {
-            //MidiService midiService = new MidiService(); //!!!
-
-            //midiService.collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
-
             Grid view = new();
 
             ColumnDefinition firstCol = new();
@@ -88,7 +84,7 @@ namespace midi_sequencer.view
             tray.SetValue(Grid.RowProperty, 0);
             tray.SetValue(Grid.ColumnProperty, 0);
 
-            Grid playback = new Playback(/*MidiService.GetInstance()*/).Build();
+            Grid playback = new Playback().Build();
             playback.SetValue(Grid.RowProperty, 1);
             playback.SetValue(Grid.ColumnProperty, 0);
 

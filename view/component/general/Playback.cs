@@ -19,18 +19,11 @@ namespace midi_sequencer.view.component.general
         private const double buttonHeight = 50;
         private const double distanceBetweenButtons = 5;
 
-        private MidiOut midiOut = new MidiOut(0);
-
         private PlaybackService playbackService;
-        // PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid")
 
-        //private MidiService midiService;
-
-        public Playback(/*MidiService midiService*/)
+        public Playback()
         {
-            //this.midiService = midiService;
-
-            playbackService = new PlaybackService(midiOut, MidiService.GetInstance().collection);
+            playbackService = new PlaybackService();
 
             brush = Brushes.Blue;
         }
