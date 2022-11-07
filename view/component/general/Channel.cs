@@ -22,6 +22,9 @@ namespace midi_sequencer.view.component.general
         private PianoRollWindow pianoRollWindow;
         private PianoRoll pianoRoll;
 
+        private ComboBox patchSelect;
+        private Button openPianoRoll;
+
         public Channel(int channelNumber)
         {
             brush = Brushes.Gray;
@@ -32,15 +35,34 @@ namespace midi_sequencer.view.component.general
         {
             Grid grid = new();
 
-            Button openPianoRoll = new Button();
+            patchSelect = new ComboBox();
+            for (int i = 0; i < 128; i++)
+            {
+                patchSelect.Items.Add(NAudio.Midi.PatchChangeEvent.GetPatchName(i));
+            }
+            patchSelect.SelectedIndex = 0;
+            patchSelect.Width = 100;
+            patchSelect.HorizontalAlignment = HorizontalAlignment.Left;
+            patchSelect.SelectionChanged += PatchSelect_SelectionChanged;
+
+            openPianoRoll = new Button();
             openPianoRoll.Content = "Open piano roll on " + channelNumber + " channel";
+            openPianoRoll.Width = 150;
+            openPianoRoll.HorizontalAlignment = HorizontalAlignment.Right;
             openPianoRoll.Click += OpenPianoRoll_Click;
 
+            grid.Children.Add(patchSelect);
             grid.Children.Add(openPianoRoll);
 
             grid.Background = brush;
 
             return grid;
+        }
+
+        private void PatchSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MidiService.GetInstance().ChangeInstrumentOnTrack(patchSelect.SelectedIndex, channelNumber);
+            MessageBox.Show("patch changed");
         }
 
         private void OpenPianoRoll_Click(object sender, System.Windows.RoutedEventArgs e)

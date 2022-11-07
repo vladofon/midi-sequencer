@@ -14,7 +14,7 @@ namespace midi_sequencer.service
         public MidiEventCollection collection { get; set; }
         public MidiOut midiOut { get; set; }
 
-        private const int amountOfTracks = 16;
+        private const int amountOfTracks = 17;
 
         private MidiService()
         {
@@ -36,7 +36,7 @@ namespace midi_sequencer.service
         {
             MidiEventCollection collection = new MidiEventCollection(1, 128); // Создание новой коллекции
 
-            for (int i = 0; i <= amountOfTracks; i++) // Заполнение новой коллекции 17 треками (0 - для настроек, 1-16 - для инструментов)
+            for (int i = 0; i < amountOfTracks; i++) // Заполнение новой коллекции 17 треками (0 - для настроек, 1-16 - для инструментов)
             {
                 collection.AddTrack();
                 AppendEndMarker(collection[i]);
@@ -57,7 +57,7 @@ namespace midi_sequencer.service
         {
             MidiEventCollection tempCollection = new MidiEventCollection(1, 128);
 
-            for (int i = 0; i <= amountOfTracks; i++)
+            for (int i = 0; i < amountOfTracks; i++)
             {
                 if (i == trackNumber)
                 {
@@ -71,6 +71,29 @@ namespace midi_sequencer.service
             }
 
             collection = tempCollection;
+        }
+
+        public void ChangeInstrumentOnTrack(int patchNumber, int trackNumber)
+        {
+            bool found = false;
+
+            for (int i = 0; i < collection[0].Count; i++)
+            {
+                if (collection[0][i].CommandCode == MidiCommandCode.PatchChange && ((PatchChangeEvent)collection[0][i]).Channel == trackNumber)
+                {
+                    collection[0][i] = new PatchChangeEvent(0, trackNumber, patchNumber);
+                    found = true;
+                }
+            }
+
+            if (found == false)
+            {
+                collection[0].Add(new PatchChangeEvent(0, trackNumber, patchNumber));
+            }
+            
+            //if (collection[0].FirstOrDefault(midiEvent => midiEvent.CommandCode == MidiCommandCode.PatchChange && ((PatchChangeEvent)midiEvent).Channel == trackNumber, null) != null)
+            //{
+            //}
         }
 
         public void ExportCollection()
