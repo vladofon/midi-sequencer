@@ -215,62 +215,6 @@ namespace midi_sequencer.service
             TurnOffPlayingNotes();
         }
 
-        public void AnotherPlaybackThread() // Поток воспроизведения
-        {
-            while (playbackState != PlaybackStates.Closed) // Основной цикл, исполняется до закрытия потока
-            {
-                if (playbackState == PlaybackStates.Playing) // Если воспроизводится
-                {
-                    //MessageBox.Show("Playing");
-
-                    if (pausedNotes != null) // Если список pausedNotes существует (то есть если трек был приостановлен)
-                    {
-                        TurnOnPlayingNotes(); // Воспроизводим все ноты из списка pausedNotes
-                    }
-
-                    while (currEvent < bigEventList.Count() && playbackState == PlaybackStates.Playing) // Цикл воспроизведения. Проходит по всем элементым списка bigEventList когда состояние воспроизведения == Playing
-                    {
-                        MicrosecondDelay((long)((bigEventList[currEvent].AbsoluteTime - currAbsoluteTime) * multiplier)); // Задержка потока в микросекундах. (Абсолютное время текущей комманды - Абсолютное время пред. комманды) * Количество микросекунд на один такт
-
-                        currAbsoluteTime = bigEventList[currEvent].AbsoluteTime; // Запись нового AbsoluteTime из текущей комманды в currAbsoluteTime
-
-                        if (bigEventList[currEvent].CommandCode == MidiCommandCode.MetaEvent) // Обработка мета эвентов
-                        {
-                            MemoryStream ms = new MemoryStream(); // Объект для записи в память двоичных значений
-                            BinaryWriter binaryWriter = new BinaryWriter(ms); // Объект, что записывает в поток бинарные данные
-                            bigEventList[currEvent].Export(ref refAT, binaryWriter); // Экспорт бинарных данных в память
-                            binaryData = ms.ToArray(); // Перевод бинарных данных в массив binaryData
-                            if (BitConverter.IsLittleEndian) Array.Reverse(binaryData); // Реверс массива
-                            if (binaryData.Length >= 5)
-                            {
-                                if (binaryData[3] == 0x03 && binaryData[4] == 0x51 && binaryData[5] == 0xFF) // Мета эвент FF 51 (темп)
-                                {
-                                    binaryData[3] = 0;
-                                    tempo = BitConverter.ToInt32(binaryData, 0);
-                                    multiplier = tempo / dtpqn;
-                                }
-                            }
-                            ms.Dispose(); // Очистка и закрытие лишних объектов
-                            ms.Close();
-                            binaryWriter.Close();
-                        }
-
-                        else // Обработка остальных эвентов
-                        {
-                            midiOut.Send(bigEventList[currEvent].GetAsShortMessage()); // Отправка МИДИ комманды на воспроизводящее Midi устройство
-                        }
-
-                        currEvent++; // Действительно блять, почему нихуя не играло?
-                    }
-
-                    if (currEvent == bigEventList.Count()) // После завершения цикла воспроизведения по причине полного проигрывания трека, присваиваем воспроизведению состояние Stopped
-                    {
-                        playbackState = PlaybackStates.Stopped;
-                    }
-                }
-            }
-        }
-
         public void TurnOffPlayingNotes()
         {
             if (pausedNotes == null) return; // Выходим из метода если pausedNotes == null

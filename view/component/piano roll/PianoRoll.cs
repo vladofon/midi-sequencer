@@ -27,10 +27,11 @@ namespace midi_sequencer.view.component.piano_roll
 
         public PianoRoll(int channel)
         {
-            this.pianoKeysBuilder = new PianoKeys(countOfNotes, noteButtonHeight);
-            this.notesGridBuilder = new NotesGrid(countOfNotes, noteButtonHeight, noteButtonWidth);
-            this.pianoRoll = new Grid();
             this.channel = channel;
+
+            this.pianoKeysBuilder = new PianoKeys(countOfNotes, noteButtonHeight);
+            this.notesGridBuilder = new NotesGrid(countOfNotes, noteButtonHeight, noteButtonWidth, this.channel);
+            this.pianoRoll = new Grid();
         }
 
         public List<NoteButton> GetNoteButtons()

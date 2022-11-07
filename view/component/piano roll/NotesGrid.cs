@@ -28,13 +28,15 @@ namespace midi_sequencer.view.component.piano_roll
         private int noteButtonHeight;
         private int countOfNotes;
 
+        private int channel;
+
         private Grid notesGrid;
         private Brush bgColor;
 
         private ScrollViewer horizontalScroll;
         private int scrollMultiplier = 0;
 
-        public NotesGrid(int countOfNotes, int noteButtonWidth, int noteButtonHeight)
+        public NotesGrid(int countOfNotes, int noteButtonWidth, int noteButtonHeight, int channel)
         {
             this.currentPressedNote = new Button();
             this.mouseDownOnBuild = new Point(0, 0);
@@ -46,6 +48,7 @@ namespace midi_sequencer.view.component.piano_roll
             this.noteButtonWidth = noteButtonWidth;
             this.noteButtonHeight = noteButtonHeight;
             this.countOfNotes = countOfNotes;
+            this.channel = channel;
             this.notesGrid = new Grid();
             this.horizontalScroll = new();
             this.bgColor = Brushes.Gray;
@@ -61,7 +64,7 @@ namespace midi_sequencer.view.component.piano_roll
             {
                 foreach (Button note in this.notes[i])
                 {
-                    noteButtons.Add(new NoteButton(1, i, note, this.noteButtonWidth, this.noteButtonHeight));
+                    noteButtons.Add(new NoteButton(channel, i, note, this.noteButtonWidth, this.noteButtonHeight));
                 }
             }
 

@@ -67,10 +67,8 @@ namespace midi_sequencer.view.component.general
             MidiEventMapper mapper = new();
             List<MidiEvent> midi = mapper.mapAll(this.pianoRoll.GetNoteButtons());
 
-            MidiService.GetInstance().collection.AddTrack(midi); //!!!
-            //midiService.AppendEndMarker(midiService.collection[17]);
+            MidiService.GetInstance().WriteInTrack(midi, channelNumber);
 
-            //midiService.collection.PrepareForExport();
             MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection);
         }
     }

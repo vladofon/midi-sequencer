@@ -19,7 +19,7 @@ namespace midi_sequencer.view.component.general
         public Channels()
         {
             channels = new List<Channel>();
-            for (int i = 0; i < 16; i++)
+            for (int i = 1; i <= 16; i++)
             {
                 channels.Add(new Channel(i));
             }

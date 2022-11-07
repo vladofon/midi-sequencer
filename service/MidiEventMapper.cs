@@ -18,7 +18,7 @@ namespace midi_sequencer.service
                 noteButton.GetAbsoluteTime(),
                 noteButton.GetChannel(),
                 noteButton.GetNoteNumber(),
-                120,
+                127,
                 noteButton.GetDuration()
             );
 

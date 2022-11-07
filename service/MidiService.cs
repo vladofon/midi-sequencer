@@ -26,6 +26,20 @@ namespace midi_sequencer.service
         }
 
         public MidiEventCollection collection { get; set; }
+        private const int amountOfTracks = 16;
+
+        public MidiEventCollection CreateNewCollection()
+        {
+            MidiEventCollection collection = new MidiEventCollection(1, 128); // Создание новой коллекции
+
+            for (int i = 0; i <= amountOfTracks; i++) // Заполнение новой коллекции 17 треками (0 - для настроек, 1-16 - для инструментов)
+            {
+                collection.AddTrack();
+                AppendEndMarker(collection[i]);
+            }
+
+            return collection;
+        }
 
         public void AppendEndMarker(IList<MidiEvent> eventList)
         {
@@ -35,17 +49,24 @@ namespace midi_sequencer.service
             eventList.Add(new MetaEvent(MetaEventType.EndTrack, 0, absoluteTime));
         }
 
-        public MidiEventCollection CreateNewCollection()
+        public void WriteInTrack(List<MidiEvent> eventList, int trackNumber)
         {
-            MidiEventCollection collection = new MidiEventCollection(1, 128); // Создание новой коллекции
+            MidiEventCollection tempCollection = new MidiEventCollection(1, 128);
 
-            for (int i = 0; i < 16; i++) // Заполнение новой коллекции 17 треками (0 - для настроек, 1-16 - для инструментов)
+            for (int i = 0; i <= amountOfTracks; i++)
             {
-                collection.AddTrack();
-                collection[i].Add(new MetaEvent(MetaEventType.EndTrack, 0, 0));
+                if (i == trackNumber)
+                {
+                    tempCollection.AddTrack(eventList);
+                    AppendEndMarker(tempCollection[i]);
+                }
+                else
+                {
+                    tempCollection.AddTrack(this.collection[i]);
+                }
             }
 
-            return collection;
+            collection = tempCollection;
         }
 
         public void ExportCollection()
