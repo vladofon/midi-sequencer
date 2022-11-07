@@ -88,7 +88,7 @@ namespace midi_sequencer.view
             tray.SetValue(Grid.RowProperty, 0);
             tray.SetValue(Grid.ColumnProperty, 0);
 
-            Grid playback = new Playback(MidiService.GetInstance()).Build();
+            Grid playback = new Playback(/*MidiService.GetInstance()*/).Build();
             playback.SetValue(Grid.RowProperty, 1);
             playback.SetValue(Grid.ColumnProperty, 0);
 

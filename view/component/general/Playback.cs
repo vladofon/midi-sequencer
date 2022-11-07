@@ -24,13 +24,13 @@ namespace midi_sequencer.view.component.general
         private PlaybackService playbackService;
         // PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid")
 
-        private MidiService midiService;
+        //private MidiService midiService;
 
-        public Playback(MidiService midiService)
+        public Playback(/*MidiService midiService*/)
         {
-            this.midiService = midiService;
+            //this.midiService = midiService;
 
-            playbackService = new PlaybackService(midiOut, midiService.collection);
+            playbackService = new PlaybackService(midiOut, MidiService.GetInstance().collection);
 
             brush = Brushes.Blue;
         }
