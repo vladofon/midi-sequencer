@@ -1,4 +1,6 @@
 ﻿using midi_sequencer.model;
+using midi_sequencer.service;
+using NAudio.Midi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +56,8 @@ namespace midi_sequencer.view.component.piano_roll
             this.bgColor = Brushes.Gray;
 
             InitPianoGrid();
+
+            BuildButtonsFromCollection();
         }
 
         public List<NoteButton> GetNotes()
@@ -130,6 +134,45 @@ namespace midi_sequencer.view.component.piano_roll
             noteButton.PreviewMouseMove += Note_MouseMove;
 
             return noteButton;
+        }
+
+        public void BuildButtonsFromCollection() // parasha
+        {
+            int noteNum;
+            long noteAbsoluteTime;
+            int noteDuration;
+
+            int left;
+            int top;
+
+            NoteOnEvent noteOnEvent;
+
+            //MessageBox.Show("BuildButtonsFromCollection");
+
+            for (int i = 0; i < MidiService.GetInstance().collection[channel].Count; i++)
+            {
+                if (MidiService.GetInstance().collection[channel][i].CommandCode == MidiCommandCode.NoteOn)
+                {
+                    noteOnEvent = MidiService.GetInstance().collection[channel][i] as NoteOnEvent;
+
+                    if (noteOnEvent.Velocity > 0 && noteOnEvent.NoteLength > 0)
+                    {
+                        //MessageBox.Show("MidiCommandCode.NoteOn");
+
+                        noteNum = noteOnEvent.NoteNumber;
+                        noteAbsoluteTime = noteOnEvent.AbsoluteTime;
+                        noteDuration = noteOnEvent.NoteLength;
+
+                        left = (int)(noteAbsoluteTime / 16 * noteButtonWidth);
+                        top = (countOfNotes - noteNum - 1) * noteButtonHeight;
+
+                        Button tempButton = BuildNoteButton(left, top);
+                        tempButton.Width = noteDuration / 16 * noteButtonWidth;
+                        this.notesGrid.Children.Add(tempButton);
+                        this.notes[countOfNotes - noteNum - 1].Add(tempButton);
+                    }
+                }
+            }
         }
 
         private void InitPianoGrid()
