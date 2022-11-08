@@ -31,18 +31,18 @@ namespace midi_sequencer.view.component.playback
 
         // Тестовая палата для методов воспроизведения
 
-        private PlaybackService? playback;
-        private MidiOut midiOut = new MidiOut(0);
+        //private PlaybackService? playback;
+        //private MidiOut midiOut = new MidiOut(0);
 
         private void fileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback == null)
-            {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
+            //if (playback == null)
+            //{
+                //OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    playback = new PlaybackService();
+                //if (openFileDialog.ShowDialog() == true)
+                //{
+                    //playback = new PlaybackService();
 
                     //currentStateLabel.Content = "Current state: " + playback.playbackState;
                     fileButton.Content = "Close file";
@@ -54,58 +54,70 @@ namespace midi_sequencer.view.component.playback
                     //    DEBUGListBox.Items.Add(playback.bigEventList[i]);
                     //}
                     //DEBUGListBox.Items.Add("");
-                }
-            }
-            else
-            {
-                playback.Close();
+                //}
+            //}
+            //else
+            //{
+                //playback.Close();
 
                 //currentStateLabel.Content = "Current state: " + playback.playbackState;
-                fileButton.Content = "Open file";
+                //fileButton.Content = "Open file";
 
-                playback = null;
-            }
+                //playback = null;
+            //}
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Close();
-                playback = null;
-            }
+            //if (playback != null)
+            //{
+            //    playback.Close();
+            //    playback = null;
+            //}
 
             //this.playbackService.Close();
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Play();
+            //if (playback != null)
+            //{
+            //    playback.Play();
 
-                //currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //    //currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //}
+
+            DEBUGListBox.Items.Clear();
+            DEBUGListBox.Items.Add("Collection commands:");
+            DEBUGListBox.Items.Add("НОМЕР ОКТАВЫ НА 1 БОЛЬШЕ РЕАЛЬНОГО (A5 => A4)");
+            for (int i = 0; i < MidiService.GetInstance().collection.Tracks; i++)
+            {
+                DEBUGListBox.Items.Add("Track " + i);
+                for (int j = 0; j < MidiService.GetInstance().collection[i].Count; j++)
+                {
+                    DEBUGListBox.Items.Add(MidiService.GetInstance().collection[i][j]);
+                }
             }
         }
 
         private void pauseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Pause();
+            //if (playback != null)
+            //{
+            //    playback.Pause();
 
-                //currentStateLabel.Content = "Current state: " + playback.playbackState;
-            }
+            //    //currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //}
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playback != null)
-            {
-                playback.Stop();
+            //if (playback != null)
+            //{
+            //    playback.Stop();
 
-                //currentStateLabel.Content = "Current state: " + playback.playbackState;
-            }
+            //    //currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //}
         }
     }
 }

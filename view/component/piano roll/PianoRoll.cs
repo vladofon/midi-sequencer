@@ -17,7 +17,7 @@ namespace midi_sequencer.view.component.piano_roll
     {
         private const int noteButtonWidth = 20;
         private const int noteButtonHeight = 20;
-        private const int countOfNotes = 127;
+        private const int countOfNotes = 128;
         private readonly int channel;
 
         private Grid pianoRoll;

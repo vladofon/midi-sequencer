@@ -91,7 +91,7 @@ namespace midi_sequencer.view.component.general
 
             MidiService.GetInstance().WriteInTrack(midi, channelNumber);
 
-            MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection);
+            MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection); // СДЕЛАТЬ ОБРАБОТКУ ИСКЛЮЧЕНИЯ КОГДА ФАЙЛ ЗАНЯТ ДРУГОЙ ПРОГРАММОЙ!!!
         }
     }
 }

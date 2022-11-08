@@ -14,6 +14,8 @@ namespace midi_sequencer.service
     {
         public List<MidiEvent> map(NoteButton noteButton)
         {
+            //MessageBox.Show(noteButton.GetNoteNumber().ToString());
+
             NoteOnEvent midiEvent = new NoteOnEvent(
                 noteButton.GetAbsoluteTime(),
                 noteButton.GetChannel(),

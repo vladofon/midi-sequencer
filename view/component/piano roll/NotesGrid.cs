@@ -60,11 +60,11 @@ namespace midi_sequencer.view.component.piano_roll
         {
             List<NoteButton> noteButtons = new();
 
-            for (int i = 1; i <= this.notes.Count; i++)
+            for (int i = 0; i < this.notes.Count; i++)
             {
                 foreach (Button note in this.notes[i])
                 {
-                    noteButtons.Add(new NoteButton(channel, i, note, this.noteButtonWidth, this.noteButtonHeight));
+                    noteButtons.Add(new NoteButton(channel, countOfNotes - i - 1, note, this.noteButtonWidth, this.noteButtonHeight));
                 }
             }
 
@@ -134,7 +134,7 @@ namespace midi_sequencer.view.component.piano_roll
 
         private void InitPianoGrid()
         {
-            for (int noteRow = 1; noteRow < countOfNotes; noteRow++)
+            for (int noteRow = 0; noteRow < countOfNotes; noteRow++)
             {
                 this.notes.Add(noteRow, new List<Button>());
             }

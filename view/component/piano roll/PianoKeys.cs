@@ -27,10 +27,10 @@ namespace midi_sequencer.view.component.piano_roll
 
         public Grid Build()
         {
-            int octavePart = 12;
-            for (int keyRow = 1; keyRow < countOfNotes; keyRow++)
+            int octavePart = 11;
+            for (int keyRow = 0; keyRow < countOfNotes; keyRow++)
             {
-                Button key = BuildPianoKey(keyRow);
+                Button key = BuildPianoKey(keyRow + 1);
 
                 if (octavePart != 6)
                 {
@@ -57,7 +57,40 @@ namespace midi_sequencer.view.component.piano_roll
         private Button BuildPianoKey(int row)
         {
             Button key = new Button();
-            key.Content = countOfNotes - row;
+
+            string content = "";
+            int note = countOfNotes - row;
+            switch ((note) % 12)
+            {
+                case 0: { content += "C"; break; }
+                case 1: { content += "C#"; break; }
+                case 2: { content += "D"; break; }
+                case 3: { content += "D#"; break; }
+                case 4: { content += "E"; break; }
+                case 5: { content += "F"; break; }
+                case 6: { content += "F#"; break; }
+                case 7: { content += "G"; break; }
+                case 8: { content += "G#"; break; }
+                case 9: { content += "A"; break; }
+                case 10: { content += "A#"; break; }
+                case 11: { content += "B"; break; }
+            }
+            switch ((note) / 12)
+            {
+                case 0: { content += "-1"; break; }
+                case 1: { content += "0"; break; }
+                case 2: { content += "1"; break; }
+                case 3: { content += "2"; break; }
+                case 4: { content += "3"; break; }
+                case 5: { content += "4"; break; }
+                case 6: { content += "5"; break; }
+                case 7: { content += "6"; break; }
+                case 8: { content += "7"; break; }
+                case 9: { content += "8"; break; }
+                case 10: { content += "9"; break; }
+            }
+            key.Content = /*(note).ToString() + " | " + */content;
+            key.HorizontalContentAlignment = HorizontalAlignment.Right;
             key.Background = white;
             key.Width = this.pianoKeysGrid.Width;
             key.Height = this.noteButtonHeight;
