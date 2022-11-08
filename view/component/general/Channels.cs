@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static midi_sequencer.view.component.general.Channels;
 
 namespace midi_sequencer.view.component.general
 {
@@ -16,12 +17,17 @@ namespace midi_sequencer.view.component.general
 
         private List<Channel> channels;
 
-        public Channels()
+        //public delegate void DPianoRollWindow(int channelNumber);
+        //private DPianoRollWindow dpianoRollWindow;
+
+        public Channels(DesignManager.DPianoRollWindow del)
         {
+            //dpianoRollWindow = del;
+
             channels = new List<Channel>();
             for (int i = 1; i <= 16; i++)
             {
-                channels.Add(new Channel(i));
+                channels.Add(new Channel(i, del));
             }
 
             brush = Brushes.Yellow;

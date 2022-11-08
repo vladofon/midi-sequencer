@@ -19,14 +19,19 @@ namespace midi_sequencer.view.component.general
 
         public int channelNumber;
 
-        private PianoRollWindow pianoRollWindow;
-        private PianoRoll pianoRoll;
+        //private PianoRollWindow pianoRollWindow;
+        //private PianoRoll pianoRoll;
 
         private ComboBox patchSelect;
         private Button openPianoRoll;
 
-        public Channel(int channelNumber)
+        //public delegate void DPianoRollWindow(int channelNumber);
+        private DesignManager.DPianoRollWindow dpianoRollWindow;
+
+        public Channel(int channelNumber, DesignManager.DPianoRollWindow del)
         {
+            dpianoRollWindow = del;
+
             brush = Brushes.Gray;
             this.channelNumber = channelNumber;
         }
@@ -67,31 +72,33 @@ namespace midi_sequencer.view.component.general
 
         private void OpenPianoRoll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.pianoRollWindow = new PianoRollWindow();
-            pianoRollWindow.Closed += PianoRollWindow_Closed;
+            //this.pianoRollWindow = new PianoRollWindow();
+            //pianoRollWindow.Closed += PianoRollWindow_Closed;
 
-            Grid view = new();
+            //Grid view = new();
 
-            pianoRoll = new PianoRoll(channelNumber);
-            Grid pianoRollGrid = pianoRoll.Build();
+            //pianoRoll = new PianoRoll(channelNumber);
+            //Grid pianoRollGrid = pianoRoll.Build();
 
-            view.Children.Add(pianoRollGrid);
+            //view.Children.Add(pianoRollGrid);
 
-            pianoRollWindow.Content = view;
+            //pianoRollWindow.Content = view;
 
-            pianoRollWindow.Show();
+            //pianoRollWindow.Show();
+
+            dpianoRollWindow(channelNumber);
         }
 
-        private void PianoRollWindow_Closed(object? sender, EventArgs e)
-        {
-            MessageBox.Show("piano roll on channel " + channelNumber + " closed");
+        //private void PianoRollWindow_Closed(object? sender, EventArgs e)
+        //{
+        //    MessageBox.Show("piano roll on channel " + channelNumber + " closed");
 
-            MidiEventMapper mapper = new();
-            List<MidiEvent> midi = mapper.mapAll(this.pianoRoll.GetNoteButtons());
+        //    MidiEventMapper mapper = new();
+        //    List<MidiEvent> midi = mapper.mapAll(this.pianoRoll.GetNoteButtons());
 
-            MidiService.GetInstance().WriteInTrack(midi, channelNumber);
+        //    MidiService.GetInstance().WriteInTrack(midi, channelNumber);
 
-            MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection); // СДЕЛАТЬ ОБРАБОТКУ ИСКЛЮЧЕНИЯ КОГДА ФАЙЛ ЗАНЯТ ДРУГОЙ ПРОГРАММОЙ!!!
-        }
+        //    MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection); // СДЕЛАТЬ ОБРАБОТКУ ИСКЛЮЧЕНИЯ КОГДА ФАЙЛ ЗАНЯТ ДРУГОЙ ПРОГРАММОЙ!!!
+        //}
     }
 }

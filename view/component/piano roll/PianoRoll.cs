@@ -15,7 +15,7 @@ namespace midi_sequencer.view.component.piano_roll
 {
     internal class PianoRoll : Component
     {
-        private const int noteButtonWidth = 20;
+        private const int noteButtonWidth = 5;
         private const int noteButtonHeight = 20;
         private const int countOfNotes = 128;
         private readonly int channel;
@@ -30,7 +30,7 @@ namespace midi_sequencer.view.component.piano_roll
             this.channel = channel;
 
             this.pianoKeysBuilder = new PianoKeys(countOfNotes, noteButtonHeight);
-            this.notesGridBuilder = new NotesGrid(countOfNotes, noteButtonHeight, noteButtonWidth, this.channel);
+            this.notesGridBuilder = new NotesGrid(countOfNotes, noteButtonWidth, noteButtonHeight, this.channel);
             this.pianoRoll = new Grid();
         }
 

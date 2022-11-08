@@ -4,6 +4,7 @@ using midi_sequencer.view.component;
 using midi_sequencer.view.component.general;
 using midi_sequencer.view.component.piano_roll;
 using midi_sequencer.view.component.playback;
+using midi_sequencer.windows;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -19,37 +20,38 @@ namespace midi_sequencer.view
 {
     internal class DesignManager
     {
-        public void PianoRollWindow(Window window)
+        public delegate void DPianoRollWindow(int channelNumber);
+
+        public void PianoRollWindow(int channelNumber)
         {
+            PianoRollWindow pianoRollWindow = new PianoRollWindow();
+            //pianoRollWindow.Closed += PianoRollWindow_Closed;
+
             Grid view = new();
 
-            ColumnDefinition firstCol = new();
-            RowDefinition firstRow = new();
-            RowDefinition secondRow = new();
-
-            firstRow.Height = new GridLength(30);
-
-            view.ColumnDefinitions.Add(firstCol);
-            view.RowDefinitions.Add(firstRow);
-            view.RowDefinitions.Add(secondRow);
-
-            PianoRoll pianoRoll = new PianoRoll(1);
+            PianoRoll pianoRoll = new PianoRoll(channelNumber);
             Grid pianoRollGrid = pianoRoll.Build();
-            pianoRollGrid.VerticalAlignment = VerticalAlignment.Bottom;
-            pianoRollGrid.SetValue(Grid.RowProperty, 1);
-            pianoRollGrid.SetValue(Grid.ColumnProperty, 0);
 
-            Grid pianoRollTray = new PianoRollTray(pianoRoll).Build();
-            pianoRollTray.SetValue(Grid.RowProperty, 0);
-            pianoRollTray.SetValue(Grid.ColumnProperty, 0);
-
-            view.Children.Add(pianoRollTray);
             view.Children.Add(pianoRollGrid);
 
-            window.Content = view;
+            pianoRollWindow.Content = view;
 
-            window.Show();
+            pianoRollWindow.Show();
         }
+
+        //private void PianoRollWindow_Closed(object? sender, EventArgs e)
+        //{
+        //    PianoRollWindow pianoRollWindow = (PianoRollWindow)sender;
+
+        //    MessageBox.Show("piano roll on channel " + channelNumber + " closed");
+
+        //    MidiEventMapper mapper = new();
+        //    List<MidiEvent> midi = mapper.mapAll(pianoRoll.GetNoteButtons());
+
+        //    MidiService.GetInstance().WriteInTrack(midi, channelNumber);
+
+        //    MidiFile.Export("thisshitfuckinworks.mid", MidiService.GetInstance().collection); // СДЕЛАТЬ ОБРАБОТКУ ИСКЛЮЧЕНИЯ КОГДА ФАЙЛ ЗАНЯТ ДРУГОЙ ПРОГРАММОЙ!!!
+        //}
 
         public void PlaybackWindow(Window window)
         {
@@ -59,6 +61,7 @@ namespace midi_sequencer.view
 
         public void GeneralWindow(Window window)
         {
+
             Grid view = new();
 
             ColumnDefinition firstCol = new();
@@ -92,7 +95,7 @@ namespace midi_sequencer.view
             playerScrollBar.SetValue(Grid.RowProperty, 2);
             playerScrollBar.SetValue(Grid.ColumnProperty, 0);
 
-            Grid channels = new Channels().Build();
+            Grid channels = new Channels(PianoRollWindow).Build();
             channels.SetValue(Grid.RowProperty, 3);
             channels.SetValue(Grid.ColumnProperty, 0);
 

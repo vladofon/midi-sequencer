@@ -18,8 +18,9 @@ namespace midi_sequencer.service
 
         private MidiService()
         {
-            collection = CreateNewCollection();
-            //collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
+            //collection = CreateNewCollection();
+            collection = OpenCollectionFromFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\true\\true.mid");
+            //collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\true\\true.mid");
             midiOut = new(0);
         }
 
@@ -37,6 +38,19 @@ namespace midi_sequencer.service
             MidiEventCollection collection = new MidiEventCollection(1, 128); // Создание новой коллекции
 
             for (int i = 0; i < amountOfTracks; i++) // Заполнение новой коллекции 17 треками (0 - для настроек, 1-16 - для инструментов)
+            {
+                collection.AddTrack();
+                AppendEndMarker(collection[i]);
+            }
+
+            return collection;
+        }
+
+        public MidiEventCollection OpenCollectionFromFile(string fileName)
+        {
+            MidiEventCollection collection = PlaybackService.OpenFile(fileName);
+
+            for (int i = collection.Tracks; i < amountOfTracks; i++)
             {
                 collection.AddTrack();
                 AppendEndMarker(collection[i]);

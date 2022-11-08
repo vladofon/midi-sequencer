@@ -39,7 +39,7 @@ namespace midi_sequencer.windows
         {
             PianoRollWindow pianoRollWindow = new();
 
-            designManager.PianoRollWindow(pianoRollWindow);
+            designManager.PianoRollWindow(1);
         }
 
         private void playbackButton_Click(object sender, RoutedEventArgs e)
