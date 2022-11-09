@@ -42,10 +42,10 @@ namespace midi_sequencer.service
         {
             VarsReset(); // Сброс всех переменных до стандартных значений
 
-            playbackState = PlaybackStates.Stopped; // Начальное состояние воспроизведения
+            playbackState = PlaybackStates.Undefined; // Начальное состояние воспроизведения
 
-            playThread = new Thread(PlaybackThread); // Запуск нового потока с методом PlaybackThread
-            playThread.Start();
+            //playThread = new Thread(PlaybackThread); // Запуск нового потока с методом PlaybackThread
+            //playThread.Start();
         }
 
         private void VarsReset() // Сброс всех переменных до стандартных значений
@@ -80,7 +80,12 @@ namespace midi_sequencer.service
 
         public void Play() // Начать воспроизведение из точки currEvent (по умолчанию - 0)
         {
+            if(playbackState != PlaybackStates.Undefined) playThread.Interrupt();
+
             playbackState = PlaybackStates.Playing; // Изменение состояния проигрывания
+            
+            playThread = new Thread(PlaybackThread); // Запуск нового потока с методом PlaybackThread
+            playThread.Start();
         }
 
         public void Pause() // Приостановить воспроизведение
@@ -259,13 +264,33 @@ namespace midi_sequencer.service
 
                     if (currEvents.All(num => num == -1)) // После завершения цикла воспроизведения по причине полного проигрывания трека, присваиваем воспроизведению состояние Stopped
                     {
-                        playbackState = PlaybackStates.Stopped;
+                        playbackState = PlaybackStates.Undefined;
+                        playThread.Interrupt();
+                        CleanPlayback();
+                        return;
                     }
                 }
             }
 
             pausedNotes = ReturnAllPlayingNotes(); // После закрытия основного цикла, в конце останавливаем все воспроизводящиеся ноты (нужно если поток будет закрыт до зарершения проигрывания трека)
             TurnOffPlayingNotes();
+        }
+
+        private void CleanPlayback()
+        {
+            for(int i = 0; i < this.currEvents.Count; i++)
+            {
+                this.currEvents[i] = 0;
+            }
+            for (int i = 0; i < this.currTimes.Count; i++)
+            {
+                this.currTimes[i] = 0;
+            }
+
+            this.currEvents[currEvents.Count - 1] = -1;
+            this.currTimes[currTimes.Count - 1] = -1;
+
+            MidiService.GetInstance().collection = MidiService.GetInstance().CreateNewCollection();
         }
 
         private void TurnOffPlayingNotes()
