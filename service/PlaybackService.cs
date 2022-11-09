@@ -235,6 +235,7 @@ namespace midi_sequencer.service
                             {
                                 MemoryStream ms = new MemoryStream(); // Объект для записи в память двоичных значений
                                 BinaryWriter binaryWriter = new BinaryWriter(ms); // Объект, что записывает в поток бинарные данные
+                                
                                 MidiService.GetInstance().collection[playingTrack][currEvents[playingTrack]].Export(ref refAT, binaryWriter); // Экспорт бинарных данных в память
                                 binaryData = ms.ToArray(); // Перевод бинарных данных в массив binaryData
                                 if (BitConverter.IsLittleEndian) Array.Reverse(binaryData); // Реверс массива
@@ -282,15 +283,16 @@ namespace midi_sequencer.service
             {
                 this.currEvents[i] = 0;
             }
-            for (int i = 0; i < this.currTimes.Count; i++)
-            {
-                this.currTimes[i] = 0;
-            }
+            //for (int i = 0; i < this.currTimes.Count; i++)
+            //{
+            //    this.currTimes[i] = 0;
+            //}
 
             this.currEvents[currEvents.Count - 1] = -1;
-            this.currTimes[currTimes.Count - 1] = -1;
+            this.refAT = 0;
+            //this.currTimes[currTimes.Count - 1] = -1;
 
-            MidiService.GetInstance().collection = MidiService.GetInstance().CreateNewCollection();
+            //MidiService.GetInstance().collection = MidiService.GetInstance().CreateNewCollection();
         }
 
         private void TurnOffPlayingNotes()
