@@ -114,7 +114,7 @@ namespace midi_sequencer.view.component.general
         private void PatchSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MidiService.GetInstance().ChangeInstrumentOnTrack(patchSelect.SelectedIndex, channelNumber);
-            MessageBox.Show("patch changed");
+            //MessageBox.Show("patch changed");
         }
 
         private void OpenPianoRoll_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -136,7 +136,7 @@ namespace midi_sequencer.view.component.general
 
         private void PianoRollWindow_Closed(object? sender, EventArgs e)
         {
-            MessageBox.Show("piano roll on channel " + channelNumber + " closed");
+            //MessageBox.Show("piano roll on channel " + channelNumber + " closed");
 
             MidiEventMapper mapper = new();
             List<MidiEvent> midi = mapper.mapAll(this.pianoRoll.GetNoteButtons());
