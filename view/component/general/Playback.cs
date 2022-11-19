@@ -25,7 +25,7 @@ namespace midi_sequencer.view.component.general
         {
             playbackService = new PlaybackService();
 
-            brush = Brushes.Blue;
+            brush = (SolidColorBrush)new BrushConverter().ConvertFromString("#2c3d4d");
         }
 
         public Grid Build()
@@ -36,7 +36,9 @@ namespace midi_sequencer.view.component.general
                 Height = buttonHeight,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(distanceBetweenButtons, 0, 0, 0),
-                Content = "Pause"
+                Content = "Pause",
+                Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#5f717d"),
+                Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#c4ccd0")
             };
 
             Button playButton = new()
@@ -45,7 +47,9 @@ namespace midi_sequencer.view.component.general
                 Height = buttonHeight,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(buttonWidth + distanceBetweenButtons * 2, 0, 0, 0),
-                Content = "Play"
+                Content = "Play",
+                Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#5f717d"),
+                Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#c4ccd0")
             };
 
             Button stopButton = new()
@@ -54,7 +58,9 @@ namespace midi_sequencer.view.component.general
                 Height = buttonHeight,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(buttonWidth * 2 + distanceBetweenButtons * 3, 0, 0, 0),
-                Content = "Stop"
+                Content = "Stop",
+                Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#5f717d"),
+                Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#c4ccd0")
             };
 
             pauseButton.Click += pauseButton_Click;

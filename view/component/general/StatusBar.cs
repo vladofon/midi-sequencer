@@ -14,7 +14,7 @@ namespace midi_sequencer.view.component.general
 
         public StatusBar()
         {
-            brush = Brushes.Purple;
+            brush = (SolidColorBrush)new BrushConverter().ConvertFromString("#36495a");
         }
 
         public Grid Build()
