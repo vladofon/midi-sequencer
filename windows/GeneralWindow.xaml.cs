@@ -1,4 +1,5 @@
-﻿using System;
+﻿using midi_sequencer.view;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,13 @@ namespace midi_sequencer.windows
     /// </summary>
     public partial class GeneralWindow : Window
     {
+        private DesignManager designManager;
+
         public GeneralWindow()
         {
             InitializeComponent();
+            this.designManager = new();
+            designManager.GeneralWindow(this);
         }
     }
 }
