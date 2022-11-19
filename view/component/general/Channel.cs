@@ -42,8 +42,11 @@ namespace midi_sequencer.view.component.general
                 patchSelect.Items.Add(NAudio.Midi.PatchChangeEvent.GetPatchName(i));
             }
             patchSelect.SelectedIndex = 0;
-            patchSelect.Width = 100;
-            patchSelect.HorizontalAlignment = HorizontalAlignment.Left;
+            //patchSelect.Width = 100;
+            //patchSelect.HorizontalAlignment = HorizontalAlignment.Center;
+            patchSelect.Margin = new Thickness(5, 5, 5, 5);
+            patchSelect.VerticalAlignment = VerticalAlignment.Top;
+            patchSelect.Height = 25;
             patchSelect.SelectionChanged += PatchSelect_SelectionChanged;
 
             patchSelect.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#f8634d");
@@ -56,8 +59,9 @@ namespace midi_sequencer.view.component.general
 
             openPianoRoll = new Button();
             openPianoRoll.Content = "Open piano roll on " + channelNumber + " channel";
-            openPianoRoll.Width = 150;
-            openPianoRoll.HorizontalAlignment = HorizontalAlignment.Right;
+            //openPianoRoll.Width = 150;
+            //openPianoRoll.HorizontalAlignment = HorizontalAlignment.Right;
+            openPianoRoll.Margin = new Thickness(5, patchSelect.Height + 10, 5, 5);
             openPianoRoll.Click += OpenPianoRoll_Click;
             openPianoRoll.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#122029");
             openPianoRoll.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#728395");
