@@ -38,32 +38,42 @@ namespace midi_sequencer.view.component.playback
         {
             //if (playback == null)
             //{
-                //OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                //if (openFileDialog.ShowDialog() == true)
-                //{
-                    //playback = new PlaybackService();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                //playback = new PlaybackService();
 
-                    //currentStateLabel.Content = "Current state: " + playback.playbackState;
-                    fileButton.Content = "Close file";
+                //currentStateLabel.Content = "Current state: " + playback.playbackState;
+                //fileButton.Content = "Close file";
 
-                    //DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
-                    //DEBUGListBox.Items.Add("MIDI Events:");
-                    //for (int i = 0; i < playback.bigEventList.Count; i++)
-                    //{
-                    //    DEBUGListBox.Items.Add(playback.bigEventList[i]);
-                    //}
-                    //DEBUGListBox.Items.Add("");
-                //}
+                //DEBUGListBox.Items.Add("maxAbsoluteTime: " + playback.maxAbsoluteTime);
+
+                MidiEventCollection midis = new MidiFile(openFileDialog.FileName).Events;
+
+                DEBUGListBox.Items.Add("MIDI Events:");
+                for (int i = 0; i < midis.Tracks; i++)
+                {
+                    DEBUGListBox.Items.Add("Track №" + i);
+                    for (int j = 0; j < midis[i].Count; j++)
+                    {
+                        DEBUGListBox.Items.Add(midis[i][j]);
+                    }
+                }
+                DEBUGListBox.Items.Add("");
+
+
+
+            }
             //}
             //else
             //{
-                //playback.Close();
+            //playback.Close();
 
-                //currentStateLabel.Content = "Current state: " + playback.playbackState;
-                //fileButton.Content = "Open file";
+            //currentStateLabel.Content = "Current state: " + playback.playbackState;
+            //fileButton.Content = "Open file";
 
-                //playback = null;
+            //playback = null;
             //}
         }
 

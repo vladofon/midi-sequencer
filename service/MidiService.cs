@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace midi_sequencer.service
 {
@@ -53,6 +54,22 @@ namespace midi_sequencer.service
             long absoluteTime = 0;
             if (eventList.Count > 0)
                 absoluteTime = eventList[eventList.Count - 1].AbsoluteTime;
+
+            for (int i = 0; i < eventList.Count; i++)
+            {
+                if (eventList[i].AbsoluteTime > absoluteTime)
+                {
+                    absoluteTime = eventList[i].AbsoluteTime;
+                }
+            }
+
+            //string message = "";
+            //for (int i = 0; i < eventList.Count; i++)
+            //{
+            //    message += eventList[i] + "\n";
+            //}
+            //MessageBox.Show("AB = " + absoluteTime + "\n" + message);
+
             eventList.Add(new MetaEvent(MetaEventType.EndTrack, 0, absoluteTime));
         }
 
@@ -65,7 +82,6 @@ namespace midi_sequencer.service
                 if (i == trackNumber)
                 {
                     tempCollection.AddTrack(eventList);
-                    AppendEndMarker(tempCollection[i]);
                 }
                 else
                 {
@@ -73,6 +89,7 @@ namespace midi_sequencer.service
                 }
             }
 
+            AppendEndMarker(tempCollection[trackNumber]);
             collection = tempCollection;
         }
 
