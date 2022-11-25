@@ -32,7 +32,7 @@ namespace midi_sequencer.windows
         public MainWindow()
         {
             InitializeComponent();
-            this.designManager = new();
+            //this.designManager = new();
         }
 
         private void pianoRollButton_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace midi_sequencer.windows
         {
             GeneralWindow generalWindow = new();
 
-            designManager.GeneralWindow(generalWindow);
+            //designManager.GeneralWindow(generalWindow);
         }
 
         //________________________

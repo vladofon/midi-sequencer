@@ -25,8 +25,8 @@ namespace midi_sequencer.windows
         public GeneralWindow()
         {
             InitializeComponent();
-            this.designManager = new();
-            designManager.GeneralWindow(this);
+            this.designManager = new(this);
+            designManager.GeneralWindow();
         }
     }
 }

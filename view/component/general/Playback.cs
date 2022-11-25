@@ -19,11 +19,9 @@ namespace midi_sequencer.view.component.general
         private const double buttonHeight = 50;
         private const double distanceBetweenButtons = 5;
 
-        private PlaybackService playbackService;
 
         public Playback()
         {
-            playbackService = new PlaybackService();
 
             brush = (SolidColorBrush)new BrushConverter().ConvertFromString("#2c3d4d");
         }
@@ -80,17 +78,17 @@ namespace midi_sequencer.view.component.general
 
         private void pauseButton_Click(object sender, RoutedEventArgs e)
         {
-            playbackService.Pause();
+            MidiService.GetInstance().playbackService.Pause();
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            playbackService.Play();
+            MidiService.GetInstance().playbackService.Play();
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            playbackService.Stop();
+            MidiService.GetInstance().playbackService.Stop();
         }
     }
 }

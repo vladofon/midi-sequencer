@@ -16,11 +16,14 @@ namespace midi_sequencer.service
 
         private const int amountOfTracks = 17;
 
+        public PlaybackService playbackService;
+
         private MidiService()
         {
             collection = CreateNewCollection();
-            //collection = PlaybackService.OpenFile("C:\\Users\\kosty\\source\\repos\\midi-sequencer\\Test MIDI files\\d_dead\\d_dead.mid");
             midiOut = new(0);
+
+            playbackService = new PlaybackService();
         }
 
         public static MidiService GetInstance()
@@ -57,7 +60,7 @@ namespace midi_sequencer.service
         {
             MidiEventCollection tempCollection = new MidiEventCollection(1, 128);
 
-            for (int i = 0; i < amountOfTracks; i++)
+            for (int i = 0; i < collection.Tracks; i++)
             {
                 if (i == trackNumber)
                 {
@@ -94,6 +97,11 @@ namespace midi_sequencer.service
             //if (collection[0].FirstOrDefault(midiEvent => midiEvent.CommandCode == MidiCommandCode.PatchChange && ((PatchChangeEvent)midiEvent).Channel == trackNumber, null) != null)
             //{
             //}
+        }
+
+        public void ImportFileToCollection(string path)
+        {
+            collection = PlaybackService.OpenFile(path);
         }
 
         public void ExportCollection()

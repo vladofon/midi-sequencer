@@ -40,7 +40,7 @@ namespace midi_sequencer.service
 
         public PlaybackService() // Объект воспроизведения коллекции. midiOut - устройство воспроизведения, midiEvents - коллекция
         {
-            VarsReset(); // Сброс всех переменных до стандартных значений
+            //VarsReset(); // Сброс всех переменных до стандартных значений (а этот вернуть)
 
             playbackState = PlaybackStates.Stopped; // Начальное состояние воспроизведения
 
@@ -162,6 +162,9 @@ namespace midi_sequencer.service
 
         private void PlaybackThread() // Поток воспроизведения
         {
+            Thread.Sleep(10); // Этот пиздец убрать отсюда нахуй
+            VarsReset();
+
             while (playbackState != PlaybackStates.Closed) // Основной цикл, исполняется до закрытия потока
             {
                 if (playbackState == PlaybackStates.Paused) // Если воспроизведение приостановлено

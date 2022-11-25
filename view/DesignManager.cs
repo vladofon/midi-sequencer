@@ -1,6 +1,7 @@
 ﻿using midi_sequencer.model;
 using midi_sequencer.service;
 using midi_sequencer.view.component;
+using midi_sequencer.windows;
 using midi_sequencer.view.component.general;
 using midi_sequencer.view.component.piano_roll;
 using midi_sequencer.view.component.playback;
@@ -19,6 +20,14 @@ namespace midi_sequencer.view
 {
     internal class DesignManager
     {
+        Window generalWindow;
+
+        public DesignManager(Window generalWindow)
+        {
+            this.generalWindow = generalWindow;
+            generalWindow.Closed += GeneralWindow_Closed;
+        }
+
         public void PianoRollWindow(Window window)
         {
             Grid view = new();
@@ -57,7 +66,7 @@ namespace midi_sequencer.view
             window.Show();
         }
 
-        public void GeneralWindow(Window window)
+        public void GeneralWindow()
         {
             Grid view = new();
 
@@ -106,9 +115,14 @@ namespace midi_sequencer.view
             view.Children.Add(channels);
             view.Children.Add(statusBar);
 
-            window.Content = view;
+            generalWindow.Content = view;
 
-            window.Show();
+            generalWindow.Show();
+        }
+
+        private void GeneralWindow_Closed(object? sender, EventArgs e)
+        {
+            MidiService.GetInstance().playbackService.Close();
         }
     }
 }
