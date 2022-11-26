@@ -120,6 +120,7 @@ namespace midi_sequencer.view.component.general
         private void OpenPianoRoll_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             this.pianoRollWindow = new PianoRollWindow();
+            pianoRollWindow.Title = "Channel " + channelNumber;
             pianoRollWindow.Closed += PianoRollWindow_Closed;
 
             Grid view = new();
