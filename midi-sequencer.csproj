@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="icon.png" />
+    <EmbeddedResource Include="icon.png" />
   </ItemGroup>
 
   <ItemGroup>
